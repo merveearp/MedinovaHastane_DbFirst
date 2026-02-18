@@ -4,7 +4,7 @@ Modern, rol bazlı ve yapay zekâ destekli bir Hastane Yönetim Sistemi.
 Proje mimarisi MHRS sistemi örnek alınarak geliştirilmiştir.
 
 📍 Proje Başlangıcı: Ağustos 2025  
-📊 Toplam Veri: 50.000+ kayıt  
+📊 Toplam Veri: 30.000+ kayıt  
 👩‍⚕️ 58 Doktor | 🏢 15 Departman | 👨‍👩‍👧 81 Hasta | 🔐 Rol Bazlı Kullanım
 
 ---
