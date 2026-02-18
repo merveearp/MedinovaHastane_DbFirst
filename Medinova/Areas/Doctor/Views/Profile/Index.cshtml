@@ -1,0 +1,209 @@
+﻿@model Medinova.DTOs.ProfileDtos.DoctorProfileDto
+
+@{
+    ViewBag.Title = "Profilim";
+    Layout = "~/Areas/Doctor/Views/Shared/_DoctorLayout.cshtml";
+}
+
+<div class="row mb-4">
+    <div class="col-12 d-flex justify-content-between align-items-center">
+
+        <div class="d-flex align-items-center">
+
+            <a href="@Url.Action("Index", "Home", new { area = "Doctor" })"
+               class="btn btn-outline-secondary btn-sm me-3">
+                <i class="fa fa-arrow-left"></i> Anasayfaya Dön
+            </a>
+
+            <h4 class="mb-0">👨‍⚕️ Profil Bilgilerim</h4>
+
+        </div>
+
+        <div>
+            <a href="@Url.Action("Edit" ,"Profile", new { area = "Doctor"})"
+               class="btn btn-outline-primary btn-sm me-2">
+                <i class="fa fa-edit"></i> Profili Düzenle
+            </a>
+
+            <a href="@Url.Action("ChangePassword","Profile", new { area = "Doctor"})"
+               class="btn btn-outline-danger btn-sm">
+                <i class="fa fa-key"></i> Şifre Değiştir
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+
+    <div class="col-md-4">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+
+                <img src="@(string.IsNullOrEmpty(Model.ImageUrl)
+                    ? "/Templates/medinova-1.0.0/img/doktor-avatar.png"
+                    : Model.ImageUrl)"
+                     class="rounded-circle mb-3"
+                     style="width:130px;height:130px;object-fit:cover;" />
+
+                <h5 class="mb-1">
+                    @Model.Title @Model.FirstName @Model.LastName
+                </h5>
+
+                <p class="text-muted mb-1">
+                    @Model.DepartmentName
+                </p>
+
+                <span class="badge @(Model.IsActive ? "bg-success" : "bg-danger")">
+                    @(Model.IsActive ? "Aktif" : "Pasif")
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>
+                            <i class="fas fa-id-card text-secondary me-1"></i>
+                            TC Kimlik No:
+                        </strong><br />
+                        <span class="text-muted">@Model.IdentityNumber</span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <strong>
+                            <i class="fas fa-envelope text-info me-1"></i>
+                            E-posta:
+                        </strong><br />
+                        <span class="text-muted">@Model.Email</span>
+                    </div>
+                </div>
+
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>
+                            <i class="fas fa-phone-alt text-success me-1"></i>
+                            Telefon:
+                        </strong><br />
+                        <span class="text-muted">@Model.PhoneNumber</span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <strong>
+                            <i class="fas fa-birthday-cake text-warning me-1"></i>
+                            Doğum Tarihi:
+                        </strong><br />
+                        <span class="text-muted">
+                            @(Model.BirthDate.HasValue
+                            ? Model.BirthDate.Value.ToString("dd.MM.yyyy")
+                            : "Belirtilmemiş")
+                        </span>
+                    </div>
+                </div>
+
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <strong>
+                            <i class="fas fa-hourglass-half text-secondary me-1"></i>
+                            Yaş:
+                        </strong><br />
+                        <span class="text-muted">
+                            @(Model.Age > 0 ? Model.Age.ToString() : "-")
+                        </span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <strong>
+                            <i class="fas fa-venus-mars text-primary me-1"></i>
+                            Cinsiyet:
+                        </strong><br />
+                        <span class="text-muted">@Model.GenderName</span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <strong>
+                            <i class="fas fa-tint text-danger me-1"></i>
+                            Kan Grubu:
+                        </strong><br />
+                        <span class="text-muted">
+                            @(string.IsNullOrEmpty(Model.BloodType)
+                            ? "Lütfen Ekleyiniz"
+                            : Model.BloodType)
+                        </span>
+                    </div>
+                </div>
+
+
+                <div class="mb-3">
+                    <strong>
+                        <i class="fas fa-user-md text-secondary me-1"></i>
+                        Hakkında:
+                    </strong>
+                    <p class="text-muted mt-1">
+                        @(string.IsNullOrEmpty(Model.Description)
+                        ? "Açıklama girilmemiş."
+                        : Model.Description)
+                    </p>
+                </div>
+
+
+                <div>
+                    <strong>
+                        <i class="fas fa-calendar-check text-success me-1"></i>
+                        Kayıt Tarihi:
+                    </strong><br />
+                    <span class="text-muted">
+                        @Model.CreatedDate.ToString("dd.MM.yyyy")
+                    </span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@if (TempData["Success"] != null)
+{
+    var type = TempData["AlertType"]?.ToString();
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            @if (type == "toast")
+            {
+                <text>
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: '@TempData["Success"]',
+                    showConfirmButton: false,
+                    timer: 2500,
+                    timerProgressBar: true
+                });
+                </text>
+            }
+            else
+            {
+                <text>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Başarılı!',
+                    text: '@TempData["Success"]'
+                });
+                </text>
+            }
+
+        });
+    </script>
+}
+

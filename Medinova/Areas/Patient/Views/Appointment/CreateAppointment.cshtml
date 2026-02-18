@@ -1,0 +1,160 @@
+﻿@model Medinova.DTOs.AppointmentDtos.CreateAppointmentDto
+
+@{
+    ViewBag.Title = "CreateAppointment";
+    Layout = "~/Areas/Patient/Views/Shared/_PatientLayout.cshtml";
+}
+
+<div class="mb-4">
+
+    <a href="@Url.Action("Index", "Home", new { area = "Patient" })"
+       class="btn btn-outline-primary px-4 ms-2">
+        <i class="fa-solid fa-arrow-left me-1"></i>
+        Anasayfaya Dön
+    </a>
+
+
+</div>
+
+
+
+<h4 class="fw-bold mb-4">🗓 Yeni Randevu Oluştur</h4>
+
+@using (Html.BeginForm("CreateAppointment", "Appointment", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Branş</label>
+                @Html.DropDownList("DepartmentId",
+                    (List<SelectListItem>)ViewBag.departments,
+                    "Branş Seçiniz",
+                    new { @class = "form-select", id = "departmentSelect" })
+            </div>
+
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Doktor</label>
+                <select id="doctorSelect"
+                        name="DoctorId"
+                        class="form-select">
+                    <option value="">Önce branş seçiniz</option>
+                </select>
+            </div>
+
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Tarih</label>
+                @Html.DropDownListFor(x => x.AppointmentDate,
+                    (List<SelectListItem>)ViewBag.dateList,
+                    "Tarih Seçiniz",
+                    new { @class = "form-select", id = "dateSelect" })
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Saat</label>
+                <select id="appointmentTime"
+                        name="AppointmentTime"
+                        class="form-select">
+                    <option value="">Saat Seçiniz</option>
+                </select>
+            </div>
+
+            <div class="text-end mt-4">
+                <button type="submit" class="btn btn-success px-4">
+                    Randevu Oluştur
+                </button>
+            </div>
+
+        </div>
+    </div>
+}
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+
+
+    $("#departmentSelect").change(function () {
+
+        var departmentId = $(this).val();
+
+        $("#doctorSelect").empty();
+
+        $.get("/Patient/Appointment/GetDoctorsByDepartmentId",
+            { departmentId: departmentId },
+            function (data) {
+
+                $("#doctorSelect").append("<option value=''>Doktor Seçiniz</option>");
+
+                $.each(data, function (i, doctor) {
+
+                    $("#doctorSelect").append(
+                        "<option value='" + doctor.Id + "'>" + doctor.Name + "</option>"
+                    );
+                });
+            });
+    });
+
+
+
+    $("#doctorSelect, #dateSelect").change(function () {
+
+        var doctorId = $("#doctorSelect").val();
+        var selectedDate = $("#dateSelect").val();
+
+        if (doctorId && selectedDate) {
+
+            $.get("/Patient/Appointment/GetAvailableHours",
+                {
+                    doctorId: doctorId,
+                    selectedDate: selectedDate
+                },
+                function (data) {
+
+                    $("#appointmentTime").empty();
+                    $("#appointmentTime").append("<option value=''>Saat Seçiniz</option>");
+
+                    $.each(data, function (i, hour) {
+
+                        var option = $("<option></option>");
+                        option.val(hour.Time);
+                        option.text(hour.Time + (hour.IsBooked ? " (Dolu)" : ""));
+
+                        if (hour.IsBooked) {
+                            option.prop("disabled", true);
+                        }
+
+                        $("#appointmentTime").append(option);
+                    });
+                });
+        }
+    });
+
+</script>
+
+
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Hata!',
+                text: '@Html.Raw(
+                    string.Join(" ",
+                        ViewData.ModelState.Values
+                            .SelectMany(v => v.Errors)
+                            .Select(e => e.ErrorMessage)
+                    )
+                )'
+            });
+        });
+    </script>
+}

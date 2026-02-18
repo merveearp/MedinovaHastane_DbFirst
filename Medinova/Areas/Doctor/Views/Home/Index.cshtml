@@ -1,0 +1,394 @@
+﻿@model List<Medinova.DTOs.AppointmentDtos.ResultAppointmentDto>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Doctor/Views/Shared/_DoctorLayout.cshtml";
+    int count = 0;
+}
+
+<style>
+
+    .card:hover {
+        transform: translateY(-4px);
+        transition: all .2s ease;
+    }
+
+    .profile-card-hover {
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+    }
+
+        .profile-card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+</style>
+
+<div class="page-heading">
+    <h3>📊 Doktor Paneli</h3>
+</div>
+
+
+<div class="page-content">
+    <section class="row">
+        <div class="col-12 col-lg-9">
+            <div class="row">
+                <div class="row">
+
+
+
+                    <div class="col-6 col-lg-3 col-md-6 mb-4">
+                        <a href="@Url.Action("Index","Appointment", new { area="Doctor" })"
+                           class="text-decoration-none">
+                            <div class="card shadow-sm border-0 h-100">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="stats-icon purple me-3">
+                                        <i class="iconly-boldShow"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small">Toplam Randevu</div>
+                                        <div class="fw-bold fs-4">@ViewBag.TotalAppointment</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+
+                    <div class="col-6 col-lg-3 col-md-6 mb-4">
+                        <a href="@Url.Action("Index","Patient", new { area="Doctor" })"
+                           class="text-decoration-none">
+                            <div class="card shadow-sm border-0 h-100">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="stats-icon blue me-3">
+                                        <i class="iconly-boldProfile"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small">Toplam Hasta</div>
+                                        <div class="fw-bold fs-4">@ViewBag.TotalCountPatient</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+
+                    <div class="col-6 col-lg-3 col-md-6 mb-4">
+                        <a href="@Url.Action("ActiveAppointment","Appointment", new { area="Doctor" })"
+                           class="text-decoration-none">
+                            <div class="card shadow-sm border-0 h-100">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="stats-icon green me-3">
+                                        <i class="iconly-boldAdd-User"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small">Aktif Randevu</div>
+                                        <div class="fw-bold fs-4">@ViewBag.ActiveAppointmentCount</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+
+                    <div class="col-6 col-lg-3 col-md-6 mb-4">
+                        <a href="@Url.Action("IsCompletedAppointment","Appointment", new { area="Doctor" })"
+                           class="text-decoration-none">
+                            <div class="card shadow-sm border-0 h-100">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="stats-icon red me-3">
+                                        <i class="iconly-boldBookmark"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small">Tamamlanan</div>
+                                        <div class="fw-bold fs-4">@ViewBag.CompletedAppointmentCount</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>@ViewBag.AppointmentDate Günün Programı</h4>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="table-responsive">
+
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Hasta</th>
+                                            <th>Tarih</th>
+                                            <th>Saat</th>
+                                            <th>Durum</th>
+                                            <th>Tamamlanma</th>
+                                            <th class="text-end">Detay</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @if (Model != null && Model.Any())
+                                        {
+                                            foreach (var item in Model)
+                                            {
+                                                count++;
+                                                <tr class="clickable-row"
+                                                    data-href="@Url.Action("AppointmentDetail","Appointment",
+                                new { area="Doctor", appointmentId = item.AppointmentId })">
+
+                                                    <td>@count</td>
+
+                                                    <td>
+                                                        <strong>
+                                                            @item.PatientName @item.PatientLastName
+                                                        </strong>
+                                                    </td>
+
+                                                    <td>
+                                                        @item.AppointmentDate.ToString("dd.MM.yyyy")
+                                                    </td>
+
+                                                    <td>
+                                                        <span class="badge bg-secondary">
+                                                            <i class="far fa-clock me-1"></i>
+                                                            @item.AppointmentTime
+                                                        </span>
+                                                    </td>
+
+                                                    <td>
+                                                        <span class="badge @item.BadgeClass">
+                                                            <i class="fa-solid @item.IconClass me-1"
+                                                               title="@item.IconTitle"></i>
+                                                            @item.StatusText
+                                                        </span>
+                                                    </td>
+
+                                                    <td>
+                                                        @if (!item.IsActive && item.IsCompleted)
+                                                        {
+                                                            <span class="badge bg-success">
+                                                                <i class="fas fa-check-circle me-1"></i>
+                                                                Tamamlandı
+                                                            </span>
+                                                        }
+                                                        else if (item.IsActive && !item.IsCompleted)
+                                                        {
+                                                            <span class="badge bg-warning text-dark">
+                                                                <i class="fas fa-hourglass-half me-1"></i>
+                                                                Bekliyor
+                                                            </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="badge bg-info">
+                                                                <i class="fas fa-times-circle me-1"></i>
+                                                                Tamamlanamadı
+                                                            </span>
+                                                        }
+                                                    </td>
+
+
+                                                    <td class="text-end">
+                                                        <a href="@Url.Action("AppointmentDetail","Appointment",
+                                        new { area="Doctor", appointmentId = item.AppointmentId })"
+                                                           class="btn btn-sm btn-outline-primary">
+                                                            <i class="fas fa-eye"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td colspan="7"
+                                                    class="text-center text-muted py-4">
+                                                    <i class="fas fa-info-circle me-1"></i>
+                                                    Gösterilecek randevu bulunamadı.
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+        <div class="col-12 col-lg-3">
+            <a href="@Url.Action("Index", "Profile", new { area = "Doctor" })"
+               style="text-decoration:none;">
+
+                <div class="card profile-card-hover">
+
+                    <div class="card-body py-4 px-5">
+                        <div class="d-flex align-items-center justify-content-between">
+
+                            <div class="d-flex align-items-center">
+
+                                <div class="avatar avatar-md">
+                                    <img src="@(Session["DoctorImage"] != null
+                            ? Session["DoctorImage"].ToString()
+                            : Url.Content("~/Templates/medinova-1.0.0/img/doktor-avatar.png"))"
+                                         alt="Doktor"
+                                         class="rounded-circle shadow-sm"
+                                         style="width:46px;height:46px;object-fit:cover;" />
+                                </div>
+
+                                <div class="ms-3 name lh-sm">
+                                    <div class="fw-semibold text-dark">
+                                        Dr. @(Session["DoctorFullName"] ?? "Doktor")
+                                    </div>
+
+                                    <small class="text-muted d-block">
+                                        @(Session["DoctorTitle"] ?? "")
+                                    </small>
+
+                                    <small class="text-muted">
+                                        Kayıt Tarihi:
+                                        @(ViewBag.CreatedDoctorDate != null
+                                ? ((DateTime)ViewBag.CreatedDoctorDate).ToString("dd MMMM yyyy")
+                                : "-")
+                                    </small>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </a>
+
+
+            <div class="card shadow-sm">
+
+                <div class="card-header">
+                    <h4>🗓 Hızlı Randevu İşlemleri</h4>
+                </div>
+
+                <div class="card-content pb-4">
+
+                    <div class="d-flex align-items-center px-4 py-3 border-bottom">
+                        <div class="avatar avatar-lg bg-light-success">
+                            <i class="fas fa-calendar-plus text-success fs-4"></i>
+                        </div>
+                        <div class="ms-4 flex-grow-1">
+                            <h6 class="mb-1 fw-bold">Yeni Randevu Oluştur</h6>
+                            <small class="text-muted">Hastanız için yeni randevu kaydı açın</small>
+                        </div>
+                        <a href="@Url.Action("CreateAppointment","Appointment", new { area="Doctor" })"
+                           class="btn btn-sm btn-success">
+                            Oluştur
+                        </a>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4>
+                        @Session["DoctorTitle"] @Session["DoctorFullName"] Randevu Raporu
+                    </h4>
+
+                </div>
+                <div class="card-body">
+                    <canvas id="myPieChart" style="width:100%;max-width:600px; height:300px;"></canvas>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if (TempData["Success"] != null)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Başarılı!',
+                text: '@TempData["Success"]'
+            });
+        });
+    </script>
+}
+
+@if (Session["JustLoggedInDoctor"] != null)
+{
+    <script>
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'Hoş geldiniz @Session["DoctorFullName"]',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    </script>
+}
+
+@{ Session.Remove("JustLoggedInDoctor"); }
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const ctx = document.getElementById('myPieChart').getContext('2d');
+
+    new Chart(ctx, {
+        type: "pie",
+        data: {
+            labels: ["İptal", "Tamamlanan", "Aktif"],
+            datasets: [{
+                backgroundColor: ["#b91d47", "#66C0ED", "#8BED66"],
+                data: [@ViewBag.cancel, @ViewBag.complete, @ViewBag.active]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text:"Durum Dağılımı"
+
+                }
+            }
+        }
+    });
+
+});
+</script>

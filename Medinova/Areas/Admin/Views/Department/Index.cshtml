@@ -1,0 +1,131 @@
+﻿@model List<Medinova.DTOs.DepartmentDtos.ResultDepartmentDto>
+@{
+    ViewBag.Title = "Departmanlar";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row mb-3">
+    <div class="col-12 d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">🏥 Departmanlar</h4>
+
+        <a href="/Admin/Department/Create" class="btn btn-primary btn-sm">
+            <i class="fas fa-plus"></i> Yeni Departman
+        </a>
+    </div>
+</div>
+
+<div class="row">
+
+    @foreach (var item in Model)
+    {
+        var statusText = item.IsActive ? "Aktif" : "Pasif";
+        var statusColor = item.IsActive ? "success" : "danger";
+        var cardOpacity = item.IsActive ? "" : "opacity-75";
+
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
+
+            <div class="card shadow-sm h-100 @cardOpacity">
+
+
+                <a href="/Admin/Department/GetDoctors?departmentId=@item.DepartmentId"
+                   class="text-decoration-none text-dark">
+
+                    <div class="card-body text-center department-clickable">
+
+                        <div class="mb-3">
+                            <i class="fa fa-hospital fa-2x text-primary"></i>
+                        </div>
+
+                        <h5 class="font-weight-bold mb-1">
+                            @item.Name
+                        </h5>
+
+                        <span class="badge badge-@statusColor mb-2">
+                            @statusText
+                        </span>
+
+                        <div class="mt-3">
+                            <span class="badge bg-info text-dark">
+                                <i class="fas fa-user-md me-1"></i>
+                                Doktor Sayısı: <strong>@item.DoctorCount</strong>
+                            </span>
+                        </div>
+
+
+                    </div>
+                </a>
+
+
+                <div class="card-footer text-center bg-white border-0">
+                    <a href="/Admin/Department/Edit/@item.DepartmentId"
+                       class="btn btn-sm btn-warning mx-1"
+                       title="Düzenle">
+                        <i class="fas fa-edit"></i>
+                    </a>
+
+                    <a href="/Admin/Department/Delete/@item.DepartmentId"
+                       class="btn btn-sm btn-danger mx-1"
+                       title="Pasife Al"
+                       onclick="return confirm('Bu departmanı pasife almak istediğinize emin misiniz?')">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
+
+
+
+<style>
+
+    .department-clickable {
+        cursor: pointer;
+        transition: all .2s ease;
+    }
+
+    .department-clickable:hover {
+        background-color: rgba(0, 123, 255, 0.04);
+    }
+
+
+    .department-card {
+        border-radius: 16px;
+        transition: all .25s ease;
+    }
+
+        .department-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .department-card.active {
+            border-top: 4px solid #28a745;
+        }
+
+        .department-card.passive {
+            border-top: 4px solid #dc3545;
+            opacity: .75;
+        }
+
+    .department-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        margin: 0 auto;
+    }
+
+    .icon-active {
+        background: rgba(40,167,69,.15);
+        color: #28a745;
+    }
+
+    .icon-passive {
+        background: rgba(220,53,69,.15);
+        color: #dc3545;
+    }
+</style>

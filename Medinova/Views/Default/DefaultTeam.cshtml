@@ -1,0 +1,127 @@
+﻿@model List<Medinova.Models.Department>
+
+<style>
+   .team-section {
+    position: relative;
+    background: url('/Templates/medinova-1.0.0/img/medinova-team.png') center center no-repeat;
+    background-size: cover;
+    padding: 140px 0;
+}
+
+/* Overlay biraz daha açık yapıyoruz */
+.team-overlay {
+    background: rgba(10, 20, 40, 0.65);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.team-content {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+}
+
+/* BAŞLIK BÜYÜTÜLDÜ */
+.team-title {
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.6);
+}
+
+/* ALT YAZI BÜYÜTÜLDÜ */
+.team-subtitle {
+    font-size: 18px;
+    color: #e6edf5;
+    max-width: 750px;
+    margin: 0 auto 50px auto;
+    line-height: 1.7;
+}
+
+/* LİSTE */
+.department-list {
+    columns: 2;
+    column-gap: 60px;
+    padding-left: 0;
+}
+
+.department-list li {
+    list-style: none;
+    margin-bottom: 16px;
+    font-size: 18px;
+    font-weight: 500;
+    position: relative;
+    padding-left: 25px;
+    color: #ffffff;
+}
+
+.department-list li::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    background: #0dcaf0;
+    border-radius: 50%;
+    position: absolute;
+    left: 0;
+    top: 8px;
+}
+
+
+ (max-width: 768px) {
+
+    .team-title {
+        font-size: 34px;
+    }
+
+    .team-subtitle {
+        font-size: 16px;
+    }
+
+    .department-list {
+        columns: 1;
+    }
+}
+
+</style>
+
+<section class="team-section">
+    <div class="team-overlay"></div>
+
+    <div class="container team-content">
+
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-8">
+
+                <h2 class="team-title">
+                    Alanında Uzman Kadromuz
+                </h2>
+
+                <p class="team-subtitle">
+                    Medinova Hastanesi, modern tıp teknolojileri ve deneyimli
+                    uzman kadrosu ile birçok branşta sağlık hizmeti sunmaktadır.
+                </p>
+
+            </div>
+        </div>
+
+        <div class="row justify-content-center mt-4">
+            <div class="col-lg-8">
+
+                <ul class="department-list">
+
+                    @foreach (var department in Model)
+                    {
+                        <li>@department.Name</li>
+                    }
+
+                </ul>
+
+            </div>
+        </div>
+
+    </div>
+</section>

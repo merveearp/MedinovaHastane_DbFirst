@@ -1,0 +1,135 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_UILayout.cshtml";
+}
+
+
+
+<style>
+
+
+    .blog-read {
+        font-size: 14px;
+        font-weight: 600;
+        color: #0d6efd;
+        position: relative;
+        text-decoration: none;
+    }
+
+        .blog-read::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -3px;
+            width: 0%;
+            height: 2px;
+            background-color: #0d6efd;
+            transition: width 0.3s ease;
+        }
+
+        .blog-read:hover::after {
+            width: 100%;
+        }
+
+    .blog-card {
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+        .blog-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 35px rgba(0,0,0,0.12);
+        }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: #0d6efd;
+        border-radius: 50%;
+        padding: 20px;
+    }
+</style>
+
+@Html.Action("DefaultHero")
+
+@Html.Action("DefaultAbout")
+
+<!-- Services Start -->
+@Html.Action("DefaultServices")
+<!-- Services End -->
+<!-- Blog Start -->
+@Html.Action("DefaultBlog")
+<!-- Blog End -->
+<!-- Appointment Start -->
+@Html.Action("DefaultAppointment")
+<!-- Appointment End -->
+<!-- Team Start -->
+@Html.Action("DefaultTeam")
+<!-- Team End -->
+<!-- Testimonial Start -->
+@Html.Action("DefaultTestimonial")
+<!-- Testimonial End -->
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if (TempData["LoginSuccess"] != null)
+{
+    <script>
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'Başarılı',
+            text: @Html.Raw(Json.Encode(TempData["LoginSuccess"])),
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
+    </script>
+}
+
+@if (TempData["LoginRequired"] != null)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Giriş Yapmalısınız',
+                text: 'Randevu oluşturmak için giriş yapmanız gerekiyor.',
+                showCancelButton: true,
+                confirmButtonText: 'Giriş Yap',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/Account/Login';
+                }
+            });
+
+        });
+    </script>
+}
+
+
+@if (TempData["AppointmentSuccess"] != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Başarılı',
+            text: @Html.Raw(Json.Encode(TempData["AppointmentSuccess"])),
+            confirmButtonColor: '#198754'
+        });
+    </script>
+}
+
+@if (TempData["AppointmentError"] != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Randevu Oluşturulamadı',
+            text: @Html.Raw(Json.Encode(TempData["AppointmentError"])),
+            confirmButtonColor: '#d33'
+        });
+    </script>
+}

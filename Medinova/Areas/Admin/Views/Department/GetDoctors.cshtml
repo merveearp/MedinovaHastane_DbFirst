@@ -1,0 +1,90 @@
+﻿@model List<Medinova.DTOs.DoctorDtos.ResultDoctorDto>
+@{
+    ViewBag.Title = "Doktorlar";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row mb-3">
+    <div class="col-12 d-flex justify-content-between align-items-center">
+
+        <h4 class="mb-0">
+            @ViewBag.DeparmentName departmanına ait 👨‍⚕️ Doktor Listesi
+        </h4>
+
+        <a href="/Admin/Department/Index" class="btn btn-secondary btn-sm">
+            ← Departmanlara Dön
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    @foreach (var doctor in Model)
+    {
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-4">
+
+            <div class="card shadow-sm h-100 doctor-card">
+
+                <div class="card-body text-center">
+
+
+                    <span class="department-badge mb-3 d-inline-block">
+                        @doctor.DepartmentName
+                    </span>
+
+
+
+                    <div class="mb-3">
+                        <img src="@doctor.ImageUrl"
+                             alt="Doctor Image"
+                             class="rounded-circle"
+                             style="width:100px;height:100px;object-fit:cover;" />
+                    </div>
+
+
+                    <h5 class="font-weight-bold mb-1">
+                        @doctor.Title
+                    </h5>
+
+                    <p class="mb-1">
+                        @doctor.FirstName @doctor.LastName
+                    </p>
+
+
+
+                </div>
+
+                <!-- FOOTER -->
+                <div class="card-footer text-center bg-white border-0">
+                    <a href="/Admin/Doctor/DoctorDetail/@doctor.DoctorId"
+                       class="btn btn-sm btn-primary">
+                        <i class="fas fa-eye"></i> Detay
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    }
+</div>
+
+
+<style>
+    .doctor-card {
+        border-radius: 14px;
+        transition: all .25s ease;
+    }
+
+        .doctor-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px rgba(0,0,0,.12);
+            <style> .department-badge
+
+    {
+        background-color: #e0f2fe; /* açık mavi zemin */
+        color: #0369a1; /* koyu mavi yazı */
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+</style>

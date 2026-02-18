@@ -1,0 +1,73 @@
+﻿@model Medinova.DTOs.AppointmentDetailDtos.CreateAppointmentDetailDto
+
+@{
+    ViewBag.Title = "Randevu Detayı Ekle";
+    Layout = "~/Areas/Doctor/Views/Shared/_DoctorLayout.cshtml";
+}
+
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h4 class="mb-1">Randevu Detayı</h4>
+        <p class="text-muted mb-0">
+            Randevu tamamlandı. Lütfen tanı, tedavi ve doktor notunu giriniz.
+        </p>
+    </div>
+</div>
+
+@using (Html.BeginForm("Create", "AppointmentDetail", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(x => x.AppointmentId)
+
+    <div class="card">
+        <div class="card-body">
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Tanı (Diagnosis)</label>
+                @Html.TextAreaFor(x => x.Diagnosis, 4, 50, new
+                {
+                    @class = "form-control",
+                    placeholder = "Hastaya konulan tanıyı giriniz"
+                })
+                @Html.ValidationMessageFor(x => x.Diagnosis, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Tedavi</label>
+                @Html.TextAreaFor(x => x.Treatment, 4, 50, new
+                {
+                    @class = "form-control",
+                    placeholder = "Uygulanan tedavi bilgilerini giriniz"
+                })
+                @Html.ValidationMessageFor(x => x.Treatment, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Doktor Notu</label>
+                @Html.TextAreaFor(x => x.DoctorNote, 4, 50, new
+                {
+                    @class = "form-control",
+                    placeholder = "Varsa ek notlarınızı giriniz"
+                })
+                @Html.ValidationMessageFor(x => x.DoctorNote, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="text-end mt-4">
+                <button type="submit" class="btn btn-success px-4">
+                    Randevuyu Tamamla
+                </button>
+                <a href="@Url.Action(
+                     "AppointmentDetail",
+                     "Appointment",
+                     new { area = "Doctor"})"
+                   class="btn btn-outline-danger btn-sm">
+                     Vazgeç
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+}

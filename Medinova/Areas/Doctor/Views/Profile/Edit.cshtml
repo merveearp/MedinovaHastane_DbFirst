@@ -1,0 +1,103 @@
+﻿@model Medinova.DTOs.ProfileDtos.DoctorProfileEditDto
+
+@{
+    ViewBag.Title = "Profili Düzenle";
+    Layout = "~/Areas/Doctor/Views/Shared/_DoctorLayout.cshtml";
+}
+
+<div class="row mb-4">
+    <div class="col-12 d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">✏️ Profil Bilgilerini Güncelle</h4>
+
+        <a href="@Url.Action("Index")" class="btn btn-secondary btn-sm">
+            ← Profile Dön
+        </a>
+    </div>
+</div>
+
+@using (Html.BeginForm("Edit", "Profile",
+    new { area = "Doctor" },
+    FormMethod.Post))
+
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(x => x.DoctorId)
+    @Html.HiddenFor(x => x.UserId)
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <div class="mb-3">
+                        <label class="form-label">Unvan</label>
+                        @Html.TextBoxFor(x => x.Title, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.Title, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Ad</label>
+                        @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.FirstName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Soyad</label>
+                        @Html.TextBoxFor(x => x.LastName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.LastName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        @Html.TextBoxFor(x => x.Email, new { @class = "form-control", type = "email" })
+                        @Html.ValidationMessageFor(x => x.Email, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="mb-3">
+                        <label class="form-label">Telefon</label>
+                        @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.PhoneNumber, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Doğum Tarihi</label>
+                        @Html.TextBoxFor(x => x.BirthDate,
+                            "{0:yyyy-MM-dd}",
+                            new { @class = "form-control", type = "date" })
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Kan Grubu</label>
+                        @Html.TextBoxFor(x => x.BloodType, new { @class = "form-control" })
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Profil Fotoğraf URL</label>
+                        @Html.TextBoxFor(x => x.ImageUrl, new { @class = "form-control" })
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Hakkında</label>
+                @Html.TextAreaFor(x => x.Description,
+                    new { @class = "form-control", rows = "3" })
+            </div>
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">
+                    💾 Kaydet
+                </button>
+            </div>
+
+        </div>
+    </div>
+}

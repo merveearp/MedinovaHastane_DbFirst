@@ -1,0 +1,161 @@
+﻿@model List<Medinova.DTOs.AppointmentDtos.ResultAppointmentDto>
+@{
+    ViewBag.Title = "GetListAppointment";
+    Layout = "~/Areas/Doctor/Views/Shared/_DoctorLayout.cshtml";
+    int count = 0;
+}
+
+
+<div class="row mb-4">
+    <div class="col-12">
+        <a href="javascript:history.back()" class="btn btn-secondary btn-sm">
+            ← Geri Dön
+        </a>
+    </div>
+</div>
+
+<div class="mb-3 d-flex gap-2">
+    <a href="@Url.Action("GetListAppointment", "Patient",
+    new { area = "Doctor", patientId = ViewBag.PatientId ,doctorId = ViewBag.DoctorId})"
+       class="btn btn-outline-secondary btn-sm">
+        Tüm Randevular
+    </a>
+
+    <a href="@Url.Action("GetListIsCanceledAppointment", "Patient",
+    new { area = "Doctor", patientId = ViewBag.PatientId,doctorId = ViewBag.DoctorId })"
+       class="btn btn-outline-danger btn-sm">
+        İptal Randevu
+    </a>
+
+    <a href="@Url.Action("GetListIsCompletedAppointment", "Patient",
+    new { area = "Doctor", patientId = ViewBag.PatientId,doctorId = ViewBag.DoctorId })"
+       class="btn btn-outline-warning btn-sm">
+        Geçmiş Randevu
+    </a>
+
+    <a href="@Url.Action("GetListIsActiveAppointment", "Patient",
+    new { area = "Doctor", patientId = ViewBag.PatientId ,doctorId = ViewBag.DoctorId})"
+       class="btn btn-outline-success btn-sm">
+        Aktif Randevu
+    </a>
+
+</div>
+
+<div class="d-flex align-items-center mb-4 p-3 bg-white rounded shadow-sm">
+
+    <img src="@ViewBag.PatientProfile"
+         alt="Hasta Fotoğrafı"
+         class="rounded-circle me-3"
+         style="width:60px;height:60px;object-fit:cover;border:2px solid #e5e7eb;" />
+
+    <div>
+        <h4 class="mb-1 fw-bold">
+            🗓 @ViewBag.PatientName
+        </h4>
+        <span class="text-muted">
+            Hastaya Ait Randevu Kayıtları
+        </span>
+    </div>
+
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+
+        <table class="table table-hover mb-0">
+            <thead class="thead-light">
+                <tr>
+                    <th>#</th>
+                    <th>Doktor</th>
+                    <th>Tarih</th>
+                    <th>Saat</th>
+                    <th>Durum</th>
+                    <th>Branş</th>
+                    <th>Tamamlanma</th>
+                    <th class="text-end">Detay</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        count++;
+
+                        <tr class="clickable-row"
+                            data-href="@Url.Action("AppointmentDetail","Appointment",
+                                 new { area="Doctor", appointmentId = item.AppointmentId })">
+
+
+                            <td><strong>@count</strong></td>
+
+                            <td>
+                                <strong>@item.DoctorName @item.DoctorLastName</strong>
+                            </td>
+
+                            <td>@item.AppointmentDate.ToString("dd.MM.yyyy")</td>
+
+                            <td>@item.AppointmentTime</td>
+
+                            <td>
+                                <span class="badge @item.BadgeClass">
+                                    @item.StatusText
+                                </span>
+                            </td>
+
+                            <td>@item.DoctorBranchName</td>
+
+                            <td class="text-center">
+                                @item.CompletedText
+                                <i class="fas @item.IconClass" title="@item.IconTitle"></i>
+                            </td>
+
+                            <td class="text-end">
+                                <a href="@Url.Action("AppointmentDetail","Appointment",
+                                 new { area="Doctor", appointmentId = item.AppointmentId })"
+                                   class="btn btn-sm btn-outline-primary">
+                                    Görüntüle
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="8" class="text-center py-4 text-muted">
+                            📭 Bu hastaya ait henüz randevu kaydı bulunmamaktadır.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<style>
+    .appointment-active {
+        background-color: #ecfdf5;
+    }
+
+    .appointment-passive {
+        background-color: #fef2f2;
+    }
+
+    .clickable-row {
+        cursor: pointer;
+    }
+
+        .clickable-row:hover {
+            background-color: #e0f2fe !important;
+        }
+</style>
+
+<script>
+    document.querySelectorAll(".clickable-row").forEach(row => {
+        row.addEventListener("click", function () {
+            window.location = this.dataset.href;
+        });
+    });
+</script>

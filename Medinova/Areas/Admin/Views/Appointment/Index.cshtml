@@ -1,0 +1,187 @@
+﻿@model List<Medinova.DTOs.AppointmentDtos.ResultAppointmentDto>
+
+@{
+    ViewBag.Title = "Randevu Kayıtları";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    int count = 0;
+}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <a href="javascript:history.back()" class="btn btn-secondary btn-sm">
+            ← Geri Dön
+        </a>
+    </div>
+</div>
+
+<div class="d-flex flex-wrap gap-2 mb-4">
+
+    <a href="@Url.Action("Index","Appointment", new { area="Admin" })"
+       class="btn btn-outline-primary">
+        <i class="fas fa-calendar-alt me-1"></i>
+        Tüm Randevular
+        <span class="badge bg-primary">@ViewBag.Appointment</span>
+    </a>
+
+    <a href="@Url.Action("ActiveAppointment","Appointment", new { area="Admin" })"
+       class="btn btn-outline-success">
+        <i class="fas fa-clock me-1"></i>
+        Yaklaşan
+        <span class="badge bg-success">@ViewBag.ActiveAppointment</span>
+    </a>
+
+    <a href="@Url.Action("PassiveAppointment","Appointment", new { area="Admin" })"
+       class="btn btn-outline-danger">
+        <i class="fas fa-times-circle me-1"></i>
+        İptal Edilen
+        <span class="badge bg-danger">@ViewBag.PassiveAppointment</span>
+    </a>
+
+    <a href="@Url.Action("IsCompletedAppointment","Appointment", new { area="Admin" })"
+       class="btn btn-outline-secondary">
+        <i class="fas fa-check-circle me-1"></i>
+        Tamamlanan
+        <span class="badge bg-secondary">@ViewBag.IsCompletedAppointment</span>
+    </a>
+
+    <a href="@Url.Action("TodayAppointment","Appointment", new { area="Admin" })"
+       class="btn btn-outline-dark">
+        <i class="fas fa-calendar-day me-1"></i>
+        Bugünkü
+        <span class="badge bg-dark">@ViewBag.TodayAppointment</span>
+    </a>
+
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+
+        <table id="appointmentTable" class="table table-striped table-hover mb-0">
+
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Doktor</th>
+                    <th>Branş</th>
+                    <th>Hasta</th>
+                    <th>Tarih</th>
+                    <th>Saat</th>
+                    <th>Durum</th>
+                    <th>Tamamlanma</th>
+                    <th class="text-end">Detay</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        count++;
+
+                        <tr>
+                            <td><strong>@count</strong></td>
+
+                            <td>@item.DoctorName @item.DoctorLastName</td>
+
+                            <td>@item.DoctorBranchName</td>
+
+                            <td>@item.PatientName @item.PatientLastName</td>
+
+                            <td>@item.AppointmentDate.ToString("dd.MM.yyyy")</td>
+
+                            <td>@item.AppointmentTime</td>
+
+                            <td>
+                                <span class="badge @item.BadgeClass">
+                                    @item.StatusText
+                                </span>
+                            </td>
+
+                            <td class="text-center">
+                                @item.CompletedText
+                                <i class="fas @item.IconClass"
+                                   title="@item.IconTitle"></i>
+                            </td>
+
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-outline-primary view-appointment"
+                                        data-id="@item.AppointmentId">
+                                    Görüntüle
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="9" class="text-center py-4 text-muted">
+                            📭 Henüz kayıtlı randevu kaydı bulunmamaktadır.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="appointmentModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Randevu Detayı</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body" id="modalContent">
+                <div class="text-center p-4">
+                    <div class="spinner-border text-primary"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $('#appointmentTable').DataTable({
+            pageLength: 25,
+            order: [[4, "desc"]], 
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/tr.json"
+            }
+        });
+
+
+        $(document).on("click", ".view-appointment", function () {
+
+            var id = $(this).data("id");
+
+            $("#appointmentModal").modal("show");
+
+            $("#modalContent").html(
+                '<div class="text-center p-4"><div class="spinner-border text-primary"></div></div>'
+            );
+
+            $.get('/Admin/Appointment/GetAppointmentModal',
+                { id: id },
+                function (data) {
+                    $("#modalContent").html(data);
+                });
+        });
+
+    });
+</script>

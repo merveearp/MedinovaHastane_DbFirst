@@ -1,0 +1,120 @@
+﻿@model Medinova.DTOs.ContactDtos.ResultContactDto
+
+@{
+    ViewBag.Title = "İletişim Bilgilerini Güncelle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="section">
+    <div class="card">
+
+       
+        <div class="card-header">
+            <h4 class="card-title mb-0">İletişim Bilgilerini Güncelle</h4>
+        </div>
+
+        @using (Html.BeginForm("UpdateContact", "Contact", FormMethod.Post, new { area = "Admin" }))
+        {
+         
+
+            <div class="card-body">
+
+              
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger">
+                        Lütfen aşağıdaki alanları kontrol ediniz.
+                    </div>
+                }
+
+                <div class="row">
+
+                   
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fa-solid fa-location-dot me-2 text-primary"></i>
+                            Adres
+                        </label>
+
+                        @Html.TextAreaFor(x => x.Address, new
+                        {
+                            @class = "form-control"
+                                     + (ViewData.ModelState["Address"]?.Errors.Any() == true ? " is-invalid" : ""),
+                            rows = 3
+                        })
+
+                        @Html.ValidationMessageFor(x => x.Address, "",
+                            new { @class = "invalid-feedback d-block" })
+                    </div>
+
+                   
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fa-solid fa-phone me-2 text-primary"></i>
+                            Telefon
+                        </label>
+
+                        @Html.TextBoxFor(x => x.PhoneNumber, new
+                        {
+                            @class = "form-control"
+                                     + (ViewData.ModelState["PhoneNumber"]?.Errors.Any() == true ? " is-invalid" : "")
+                        })
+
+                        @Html.ValidationMessageFor(x => x.PhoneNumber, "",
+                            new { @class = "invalid-feedback d-block" })
+                    </div>
+
+                   
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fa-solid fa-envelope me-2 text-primary"></i>
+                            E-Posta
+                        </label>
+
+                        @Html.TextBoxFor(x => x.Mail, new
+                        {
+                            @class = "form-control"
+                                     + (ViewData.ModelState["Mail"]?.Errors.Any() == true ? " is-invalid" : ""),
+                            type = "email"
+                        })
+
+                        @Html.ValidationMessageFor(x => x.Mail, "",
+                            new { @class = "invalid-feedback d-block" })
+                    </div>
+
+                   
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fa-solid fa-clock me-2 text-primary"></i>
+                            Çalışma Saatleri
+                        </label>
+
+                        @Html.TextBoxFor(x => x.WorkingHours, new
+                        {
+                            @class = "form-control"
+                                     + (ViewData.ModelState["WorkingHours"]?.Errors.Any() == true ? " is-invalid" : ""),
+                            placeholder = "Pazartesi - Cumartesi: 08:00 - 18:00"
+                        })
+
+                        @Html.ValidationMessageFor(x => x.WorkingHours, "",
+                            new { @class = "invalid-feedback d-block" })
+                    </div>
+
+                </div>
+            </div>
+
+          
+            <div class="card-footer d-flex justify-content-end gap-2">
+                <a href="/Admin/Contact/Index"
+                   class="btn btn-outline-dark">
+                    Vazgeç
+                </a>
+
+                <button type="submit"
+                        class="btn btn-primary">
+                    Kaydet
+                </button>
+            </div>
+        }
+    </div>
+</section>

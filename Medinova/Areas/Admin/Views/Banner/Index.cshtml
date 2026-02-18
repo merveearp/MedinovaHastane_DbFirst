@@ -1,0 +1,61 @@
+﻿@model Medinova.DTOs.BannerDtos.ResultBannerDto
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section id="basic-horizontal-layouts">
+    <div class="row match-height">
+        <div class="col-md-12 col-12">
+            <div class="card">
+
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h2 class="card-title mb-0">Ana Vitrin Sayfası</h2>
+
+                    <a href="/Admin/Banner/UpdateBanner"
+                       class="btn btn-sm btn-primary">
+                        Sayfayı Düzenle
+                    </a>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-body">
+
+                        <div class="row">
+
+
+                            <div class="col-md-4">
+                                <label class="fw-bold mb-2 d-block ">Görsel</label>
+
+                                <img src="@Url.Content(Model.ImageUrl)"
+                                     class="img-fluid rounded shadow-sm"
+                                     alt="Vitrin Görseli" />
+
+                            </div>
+
+
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label class="fw-bold">Başlık</label>
+                                    <p class="form-control-plaintext">
+                                        @Model.Title
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <label class="fw-bold">Açıklama</label>
+                                    <p class="form-control-plaintext">
+                                        @Model.Description
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

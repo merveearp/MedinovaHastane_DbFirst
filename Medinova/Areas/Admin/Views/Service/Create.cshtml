@@ -1,0 +1,74 @@
+﻿@model Medinova.DTOs.ServicesDtos.CreateServiceDto
+
+@{
+    ViewBag.Title = "Yeni Hizmet Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="section">
+    <div class="card">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h4 class="card-title mb-0">Yeni Hizmet Oluştur</h4>
+
+            <a href="/Admin/Service/Index"
+               class="btn btn-sm btn-secondary">
+                <i class="bi bi-arrow-left me-1"></i>
+                Listeye Dön
+            </a>
+        </div>
+
+        <div class="card-body">
+
+            @using (Html.BeginForm("Create", "Service", FormMethod.Post, new { area = "Admin" }))
+            {
+
+                <div class="mb-3">
+                    <label class="form-label">Hizmet Adı</label>
+                    @Html.TextBoxFor(x => x.ServiceName,
+                        new { @class = "form-control", placeholder = "Hizmet adını giriniz" })
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Açıklama</label>
+                    @Html.TextAreaFor(x => x.Description,
+                        new { @class = "form-control", rows = 4, placeholder = "Hizmet açıklaması" })
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">İkon (FontAwesome Class)</label>
+                    @Html.TextBoxFor(x => x.ServiceIcon,
+                        new { @class = "form-control", id = "iconInput", placeholder = "Örn: fa-heartbeat" })
+
+                    <div class="mt-3 text-center">
+                        <i id="iconPreview"
+                           class="fa fa-stethoscope text-primary"
+                           style="font-size:40px;"></i>
+                    </div>
+                </div>
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save me-1"></i>
+                        Kaydet
+                    </button>
+                </div>
+
+            }
+
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const input = document.getElementById("iconInput");
+    const preview = document.getElementById("iconPreview");
+
+    input.addEventListener("input", function () {
+        preview.className = "fa " + this.value + " text-primary";
+    });
+
+});
+</script>

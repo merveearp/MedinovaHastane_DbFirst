@@ -1,0 +1,95 @@
+﻿@model Medinova.DTOs.MediaDtos.CreateMediaDto
+@{
+    ViewBag.Title = "Yeni Sosyal Medya";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="section">
+    <div class="card">
+
+        <div class="card-header">
+            <h4 class="card-title mb-0">Yeni Sosyal Medya Hesabı Ekle</h4>
+        </div>
+
+        @using (Html.BeginForm("Create", "Media", FormMethod.Post, new { area = "Admin" }))
+        {
+            <div class="card-body">
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger">
+                        Lütfen form alanlarını kontrol ediniz.
+                    </div>
+                }
+
+                <div class="row">
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label fw-bold">
+                            Sosyal Medya İkonu
+                        </label>
+
+                        @Html.TextBoxFor(x => x.MediaIcon, new
+                        {
+                            @class = "form-control"
+                                     + (ViewData.ModelState["MediaIcon"]?.Errors.Any() == true ? " is-invalid" : ""),
+                            placeholder = "fa-brands fa-instagram"
+                        })
+
+                        <small class="text-muted">
+                            Örnek: <code>fa-brands fa-instagram</code>
+                        </small>
+
+                        @Html.ValidationMessageFor(x => x.MediaIcon, "",
+                            new { @class = "invalid-feedback d-block" })
+                    </div>
+
+                    
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label fw-bold">
+                            Platform Adı
+                        </label>
+
+                        @Html.TextBoxFor(x => x.MediaName, new
+                        {
+                            @class = "form-control"
+                                     + (ViewData.ModelState["MediaName"]?.Errors.Any() == true ? " is-invalid" : ""),
+                            placeholder = "Instagram"
+                        })
+
+                        @Html.ValidationMessageFor(x => x.MediaName, "",
+                            new { @class = "invalid-feedback d-block" })
+                    </div>
+
+                   
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label fw-bold">
+                            Profil URL
+                        </label>
+
+                        @Html.TextBoxFor(x => x.MediaUrl, new
+                        {
+                            @class = "form-control"
+                                     + (ViewData.ModelState["MediaUrl"]?.Errors.Any() == true ? " is-invalid" : ""),
+                            placeholder = "https://instagram.com/medinova"
+                        })
+
+                        @Html.ValidationMessageFor(x => x.MediaUrl, "",
+                            new { @class = "invalid-feedback d-block" })
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card-footer d-flex justify-content-end gap-2">
+                <a href="/Admin/Media/Index" class="btn btn-outline-dark">
+                    Vazgeç
+                </a>
+
+                <button type="submit" class="btn btn-primary">
+                    Kaydet
+                </button>
+            </div>
+        }
+    </div>
+</section>

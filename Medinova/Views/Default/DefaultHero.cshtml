@@ -1,0 +1,57 @@
+﻿@model Medinova.Models.Banner
+
+<div class="container-fluid hero-header d-flex align-items-center py-5 mb-5"
+     style="
+     background:
+     linear-gradient(rgba(22, 34, 58, .75), rgba(22, 34, 58, .75)),
+     url('@Model.ImageUrl') center right / cover no-repeat;
+     min-height: 680px;
+     ">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 text-center text-lg-start">
+
+                <small class="text-uppercase text-info fw-semibold mb-3 d-inline-block"
+                       style="letter-spacing: 2px; font-family:'Inter', sans-serif;">
+                    Medinova Hospital
+                </small>
+
+                <h2 class="text-white mb-4"
+                    style="
+                    font-family:'Inter', sans-serif;
+                    font-weight:800;
+                    font-size: clamp(2.8rem, 5vw, 4.6rem);
+                    line-height:1.15;
+                    ">
+                    @Model.Title
+                </h2>
+
+                <p class="text-light mb-5"
+                   style="
+                   font-family:'Inter', sans-serif;
+                   font-size:1.15rem;
+                   max-width:92%;
+                   ">
+                    @Model.Description
+                </p>
+
+                <div class="d-flex flex-wrap gap-4">
+
+                    <a href="#team"
+                       class="btn btn-light btn-lg rounded-pill px-5 fw-semibold shadow-sm">
+                        Doktor Bul
+                    </a>
+
+                    <a href="#appointment"
+                       class="btn btn-outline-light btn-lg rounded-pill px-5 fw-semibold">
+                        Randevu Al
+                    </a>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

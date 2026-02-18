@@ -1,0 +1,132 @@
+﻿@model Medinova.DTOs.AppointmentDtos.GetAppointmentInfoDto
+
+@{
+    ViewBag.Title = "Randevu Detayı";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="mb-4">
+    <a href="javascript:history.back()" class="btn btn-secondary btn-sm">
+        ← Geri Dön
+    </a>
+</div>
+
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body d-flex align-items-center">
+        <img src="@Model.DoctorImage"
+             class="rounded-circle me-3"
+             style="width:70px;height:70px;object-fit:cover;border:2px solid #e5e7eb;" />
+
+        <div>
+            <h5 class="mb-1 fw-bold">
+                Dr. @Model.DoctorName @Model.DoctorLastName
+            </h5>
+            <span class="text-muted">Randevuya Ait Doktor Bilgisi</span>
+        </div>
+    </div>
+</div>
+
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header fw-bold">
+        👤 Hasta Bilgileri
+    </div>
+
+    <div class="card-body">
+        <div class="row g-3">
+
+            <div class="col-md-3 text-center">
+                <img src="@Model.PatientImage"
+                     class="rounded-circle mb-2"
+                     style="width:90px;height:90px;object-fit:cover;border:2px solid #e5e7eb;" />
+                <div class="fw-bold">
+                    @Model.PatientName @Model.PatientLastName
+                </div>
+                <small class="text-muted">@Model.PatientGender</small>
+            </div>
+
+            <div class="col-md-9">
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <p><strong>TC:</strong> @Model.PatientTC</p>
+                        <p><strong>Telefon:</strong> @Model.PatientPhoneNumber</p>
+                        <p><strong>Email:</strong> @Model.PatientEmail</p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <p><strong>Doğum Tarihi:</strong> @Model.PatientBirhtDate.ToString("dd.MM.yyyy")</p>
+                        <p><strong>Yaş:</strong> @Model.PatientAge</p>
+                        <p><strong>Kan Grubu:</strong> @Model.BloodType</p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="card shadow-sm">
+    <div class="card-header fw-bold">
+        🗓️ Randevu Bilgileri
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+
+            <div class="col-md-4">
+                <p>
+                    <strong>Tarih:</strong><br />
+                    @Model.AppointmentDate.ToString("dd.MM.yyyy")
+                </p>
+            </div>
+
+            <div class="col-md-4">
+                <p>
+                    <strong>Saat:</strong><br />
+                    @Model.AppointmentTime
+                </p>
+            </div>
+
+            <div class="col-md-4">
+                <p>
+                    <strong>Durum:</strong><br />
+                    @if (Model.IsCompleted == true && Model.IsActive == false)
+                    {
+                        <span class="badge bg-success">Tamamlandı</span>
+                        <br />
+
+
+                        <a href="@Url.Action(
+                    "GetAppointmentDetailByDoctorAsync",
+                    "Doctor",
+                    new {
+                        area = "Admin",
+                        appointmentId = ViewBag.AppointmentId,
+                        isCompleted = true
+                    })"
+                           class="btn btn-sm btn-outline-success mt-2">
+                            Randevu Detayı
+                        </a>
+                    }
+                    else if (Model.IsCompleted == false && Model.IsActive == true)
+                    {
+                        <span class="badge bg-success text-dark">Bekliyor</span>
+                    }
+
+                    else if (Model.IsCompleted == false && Model.IsActive == false)
+                    {
+                        <span class="badge bg-danger text-dark">İptal Randevu</span>
+                    }
+                </p>
+            </div>
+
+           
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,309 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<style>
+    html, body {
+        height: 100%;
+    }
+
+    #app {
+        min-height: 100vh;
+        display: flex;
+    }
+
+    #main {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .admin-footer {
+        margin-top: auto;
+        background-color: #fff;
+        border-top: 1px solid #e5e5e5;
+        padding: 12px 0;
+    }
+
+
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetim Paneli | Medinova </title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/Templates/mazer/dist/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="~/Templates/mazer/dist/assets/vendors/iconly/bold.css">
+    <link rel="stylesheet" href="~/Templates/mazer/dist/assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" href="~/Templates/mazer/dist/assets/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/Templates/mazer/dist/assets/css/app.css">
+    <link rel="shortcut icon" href="~/Templates/mazer/dist/assets/images/favicon.svg" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
+
+
+</head>
+
+<body>
+    <div id="app">
+        <div id="sidebar" class="active">
+            <div class="sidebar-wrapper active">
+                <div class="sidebar-header">
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div class="logo">
+                            <a href="/Admin/Dashboard/Index"
+                               class="d-flex align-items-center gap-2 text-decoration-none">
+
+                                <img src="@Url.Content("~/Templates/medinova-1.0.0/img/panel-admin.png")"
+                                     alt="Medinova Admin Logo"
+                                     style="height:42px;" />
+
+                                <div class="d-flex flex-column lh-sm">
+                                    <span class="fw-bold text-dark fs-5">
+                                        Medinova Hastane
+                                    </span>
+                                    <span class="text-primary fw-semibold fs-6">
+                                        Yönetim Paneli
+                                    </span>
+                                </div>
+
+                            </a>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="sidebar-menu">
+                    <ul class="menu">
+
+
+                        <li class="sidebar-title">Genel</li>
+
+                        <li class="sidebar-item active">
+                            <a href="/Admin/Home/Index" class="sidebar-link">
+                                <i class="bi bi-speedometer2"></i>
+                                <span>Anasayfa</span>
+                            </a>
+                        </li>
+
+
+                        <li class="sidebar-title">Randevu Yönetimi</li>
+
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class="sidebar-link">
+                                <i class="bi bi-person-badge-fill"></i>
+                                <span>Randevu İşlemleri</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item">
+                                    <a href="/Admin/Appointment/Index">
+                                        <i class="bi bi-person-vcard-fill me-2"></i>
+                                        Randevu Listesi
+                                    </a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="/Admin/AppointmentDetail/Index">
+                                        <i class="bi bi-heart-pulse-fill me-2 text-danger"></i>
+                                        Muayene Listesi
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+
+
+                        <li class="sidebar-title">Hasta Yönetimi</li>
+
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class="sidebar-link">
+                                <i class="bi bi-people-fill"></i>
+                                <span>Hasta İşlemleri</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item">
+                                    <a href="/Admin/Patient/Index">
+                                        <i class="bi bi-person-lines-fill me-2"></i>
+                                        Hasta Listesi
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+
+                        <li class="sidebar-title">Doktor Yönetimi</li>
+
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class="sidebar-link">
+                                <i class="bi bi-person-badge-fill"></i>
+                                <span>Doktor İşlemleri</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item">
+                                    <a href="/Admin/Doctor/Index">
+                                        <i class="bi bi-person-vcard-fill me-2"></i>
+                                        Doktor Listesi
+                                    </a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="/Admin/Department/Index">
+                                        <i class="bi bi-diagram-3-fill me-2"></i>
+                                        Branşlar
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+
+
+
+                        <li class="sidebar-title">Site Yönetimi</li>
+
+
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class="sidebar-link">
+                                <i class="bi bi-ui-checks"></i>
+                                <span>Tekil İçerikler</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item">
+                                    <a href="/Admin/Banner/Index">
+                                        <i class="bi bi-image-fill me-2"></i>
+                                        Banner
+                                    </a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="/Admin/About/Index">
+                                        <i class="bi bi-info-circle-fill me-2"></i>
+                                        Hakkımızda
+                                    </a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="/Admin/Contact/Index">
+                                        <i class="bi bi-telephone-fill me-2"></i>
+                                        İletişim
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class="sidebar-link">
+                                <i class="bi bi-list-ul"></i>
+                                <span>Liste İçerikleri</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item">
+                                    <a href="/Admin/AboutItem/Index">
+                                        <i class="bi bi-check2-square me-2"></i>
+                                        Hakkımda İçerikleri
+                                    </a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="/Admin/Service/Index">
+                                        <i class="bi bi-hospital-fill me-2"></i>
+                                        Servisler
+                                    </a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="/Admin/Testimonial/Index">
+                                        <i class="bi bi-chat-quote-fill me-2"></i>
+                                        Referanslar
+                                    </a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="/Admin/Blog/Index">
+                                        <i class="bi bi-journal-text me-2"></i>
+                                        Bloglar
+                                    </a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="/Admin/Media/Index">
+                                        <i class="bi bi-images me-2"></i>
+                                        Sosyal Medya
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+
+                        <li class="sidebar-title">Hesap</li>
+
+                        <li class="sidebar-item">
+                            <a href="/Admin/Profile/Index" class="sidebar-link">
+                                <i class="bi bi-person-circle"></i>
+                                <span>Profilim</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="/Admin/Login/Logout" class="sidebar-link text-danger">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Çıkış Yap</span>
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </div>
+
+
+            </div>
+        </div>
+
+        <br />
+        <br />
+
+        <div id="main">
+            <header class="mb-3">
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </header>
+
+            @RenderBody()
+
+            <br />
+            <br />
+
+            <footer class="admin-footer">
+                <div class="clearfix text-muted px-3">
+                    <div class="float-start">
+                        <p class="mb-0">
+                            © 2026 Medinova Sağlık Hizmetleri | Tüm Hakları Saklıdır
+                        </p>
+                    </div>
+                    <div class="float-end">
+                        <p class="mb-0">
+                            Sağlıkta Güven ve Kalite
+                        </p>
+                    </div>
+                </div>
+            </footer>
+
+
+        </div>
+    </div>
+    <script src="~/Templates/mazer/dist/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="~/Templates/mazer/dist/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Templates/mazer/dist/assets/vendors/apexcharts/apexcharts.js"></script>
+    <script src="~/Templates/mazer/dist/assets/js/pages/dashboard.js"></script>
+    <script src="~/Templates/mazer/dist/assets/js/main.js"></script>
+
+</body>
+
+</html>

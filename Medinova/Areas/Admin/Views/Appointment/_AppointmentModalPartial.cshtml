@@ -1,0 +1,71 @@
+﻿@model Medinova.DTOs.AppointmentDtos.GetAppointmentInfoDto
+
+<div class="row">
+
+
+    <div class="col-md-6 text-center border-end">
+        <img src="@Model.DoctorImage"
+             class="rounded-circle mb-2 shadow-sm"
+             style="width:90px;height:90px;object-fit:cover;" />
+
+        <h6 class="fw-bold mt-2">
+            @Model.DoctorName @Model.DoctorLastName
+        </h6>
+
+        <small class="text-muted">
+            @Model.PatientBrans
+        </small>
+    </div>
+
+
+    <div class="col-md-6 text-center">
+        <img src="@Model.PatientImage"
+             class="rounded-circle mb-2 shadow-sm"
+             style="width:90px;height:90px;object-fit:cover;" />
+
+        <h6 class="fw-bold mt-2">
+            @Model.PatientName @Model.PatientLastName
+        </h6>
+
+        <small class="text-muted">
+            @Model.PatientGender • @Model.PatientAge Yaş
+        </small>
+    </div>
+
+</div>
+
+<hr />
+
+<div class="row mt-3">
+    <div class="col-md-6">
+        <p><strong>Tarih:</strong> @Model.AppointmentDate.ToString("dd.MM.yyyy")</p>
+        <p><strong>Saat:</strong> @Model.AppointmentTime</p>
+    </div>
+
+    <div class="col-md-6">
+        @{
+            string statusText;
+            string badgeClass;
+
+            if (Model.IsActive)
+            {
+                statusText = "Randevu Aktif";
+                badgeClass = "bg-success";
+            }
+            else if (Model.IsCompleted)
+            {
+                statusText = "Randevu Tamamlandı";
+                badgeClass = "bg-info";
+            }
+            else
+            {
+                statusText = "Randevu İptal";
+                badgeClass = "bg-danger";
+            }
+        }
+
+        <span class="badge @badgeClass px-3 py-2">
+            @statusText
+        </span>
+    </div>
+</div>

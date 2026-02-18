@@ -1,0 +1,215 @@
+﻿@model Medinova.DTOs.AppointmentDetailDtos.DetailAppointmentDto
+
+@{
+    ViewBag.Title = "Randevu Detayı";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<!-- ÜST BUTONLAR -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <a href="javascript:history.back()" class="btn btn-secondary btn-sm">
+        ← Randevu Bilgisine Geri Dön
+    </a>
+
+    <a href="@Url.Action(
+        "GetListAppointment",
+        "Doctor",
+        new { area = "Admin", id = ViewBag.DoctorId })"
+       class="btn btn-outline-primary btn-sm">
+        📋 Doktor Randevu Listesi
+    </a>
+
+</div>
+
+
+<div class="card mb-4 border-0 shadow-sm">
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+
+            <div>
+                <h4 class="mb-1 fw-bold">
+                    Randevu Detayı
+                </h4>
+
+                <div class="text-muted">
+                    <i class="fas fa-user-md me-1"></i>
+                    @Model.DoctorTitle @Model.DoctorName @Model.DoctorLastName
+                    —
+                    <span class="fw-semibold">@Model.AppointmentDepartment</span>
+                </div>
+
+                <div class="text-muted mt-1">
+                    <i class="fas fa-user me-1"></i>
+                    Hasta:
+                    <strong>
+                        @Model.PatientName @Model.PatientLastName
+                    </strong>
+                </div>
+            </div>
+
+            
+            <div class="text-end mt-3 mt-md-0">
+                <div class="mb-1">
+                    <span class="badge bg-success px-3 py-2">
+                        <i class="fas fa-check-circle me-1"></i>
+                        Tamamlanmış Randevu
+                    </span>
+                </div>
+
+                <div class="text-muted small">
+                    <i class="fas fa-calendar-alt me-1"></i>
+                    @Model.AppointmentDate.ToString("dd MMMM yyyy")
+                    &nbsp;|&nbsp;
+                    <i class="fas fa-clock me-1"></i>
+                    @Model.AppointmentTime
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="fw-bold mb-1">
+            👨‍⚕️ @Model.DoctorTitle @Model.DoctorName @Model.DoctorLastName
+        </h5>
+        <span class="text-muted">
+            @Model.AppointmentDepartment
+        </span>
+    </div>
+</div>
+
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header fw-bold">
+        👤 Hasta Bilgileri
+    </div>
+
+    <div class="card-body">
+        <div class="row align-items-center">
+
+            <div class="col-md-3 text-center">
+                <img src="@Model.PatientImage"
+                     class="rounded-circle mb-2"
+                     style="width:90px;height:90px;object-fit:cover;border:2px solid #e5e7eb;" />
+
+                <div class="fw-bold">
+                    @Model.PatientName @Model.PatientLastName
+                </div>
+                <small class="text-muted">@Model.PatientGender</small>
+            </div>
+
+            <div class="col-md-9">
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <p><strong>TC:</strong> @Model.PatientTC</p>
+                        <p><strong>Telefon:</strong> @Model.PatientPhoneNumber</p>
+                        <p><strong>Email:</strong> @Model.PatientEmail</p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <p><strong>Doğum Tarihi:</strong> @Model.PatientBirhtDate.ToString("dd.MM.yyyy")</p>
+                        <p><strong>Yaş:</strong> @Model.PatientAge</p>
+                        <p><strong>Kan Grubu:</strong> @Model.BloodType</p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header fw-bold">
+        🗓️ Randevu Bilgileri
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+
+            <div class="col-md-4">
+                <p>
+                    <strong>Tarih:</strong><br />
+                    @Model.AppointmentDate.ToString("dd.MM.yyyy")
+                </p>
+            </div>
+
+            <div class="col-md-4">
+                <p>
+                    <strong>Saat:</strong><br />
+                    @Model.AppointmentTime
+                </p>
+            </div>
+
+            <div class="col-md-4">
+                <p>
+                    <strong>Durum:</strong><br />
+                    @if (Model.IsCompleted)
+                    {
+                        <span class="badge bg-success">Tamamlandı</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">Tamamlanmadı</span>
+                    }
+                </p>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- 🩺 Tanı & Tedavi -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header fw-bold">
+        🩺 Tanı & Tedavi
+    </div>
+
+    <div class="card-body">
+        <div class="mb-3">
+            <strong>Tanı (Diagnosis)</strong>
+            <div class="border rounded p-2 bg-light mt-1">
+                @(string.IsNullOrEmpty(Model.Diagnosis) ? "Tanı girilmemiş." : Model.Diagnosis)
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <strong>Tedavi (Treatment)</strong>
+            <div class="border rounded p-2 bg-light mt-1">
+                @(string.IsNullOrEmpty(Model.Treatment) ? "Tedavi bilgisi girilmemiş." : Model.Treatment)
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card shadow-sm">
+    <div class="card-header fw-bold">
+        📝 Doktor Notu
+    </div>
+
+    <div class="card-body">
+        <div class="border rounded p-3 bg-light">
+            @(string.IsNullOrEmpty(Model.DoctorNote)
+                ? "Doktor notu bulunmamaktadır."
+                : Model.DoctorNote)
+        </div>
+    </div>
+</div>
+
+
+<div class="mt-4 text-end">
+    <a href="@Url.Action("Index", "Doctor", new { area = "Admin" })"
+       class="btn btn-outline-secondary">
+        ← Doktor Listesine Dön
+    </a>
+</div>

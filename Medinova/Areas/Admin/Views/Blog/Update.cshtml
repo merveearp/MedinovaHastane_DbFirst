@@ -1,0 +1,145 @@
+﻿@model Medinova.DTOs.BlogDtos.UpdateBlogDto
+
+@{
+    ViewBag.Title = "Blog Güncelle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-heading mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h3>
+            <i class="fas fa-edit text-warning me-2"></i>
+            Blog Güncelle
+        </h3>
+
+        <a href="@Url.Action("Index","Blog", new { area="Admin"})"
+           class="btn btn-outline-secondary btn-sm">
+            <i class="fa fa-arrow-left me-1"></i>
+            Listeye Dön
+        </a>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        @using (Html.BeginForm("Update", "Blog", FormMethod.Post, new { area = "Admin" }))
+        {
+            @Html.HiddenFor(x => x.BlogId)
+
+            <div class="row">
+
+                <div class="col-md-8">
+
+                    <div class="mb-3">
+                        <label class="form-label">Blog Başlığı</label>
+                        @Html.TextBoxFor(x => x.BlogTitle, new { @class = "form-control" })
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Alt Başlık</label>
+                        @Html.TextBoxFor(x => x.BlogSubtitle, new { @class = "form-control" })
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Blog İçeriği</label>
+                        @Html.TextAreaFor(x => x.BlogContent,
+                            new { @class = "form-control", rows = 8 })
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Yazar Adı</label>
+                        @Html.TextBoxFor(x => x.BlogWriter, new { @class = "form-control" })
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+
+                    <div class="mb-4 text-center">
+                        <label class="form-label">Yazar Profil Linki</label>
+                        @Html.TextBoxFor(x => x.WriterProfile,
+                            new { @class = "form-control image-input", data_preview = "writerPreview" })
+
+                        <img id="writerPreview"
+                             src="@Model.WriterProfile"
+                             class="img-thumbnail mt-2"
+                             style="height:120px; object-fit:cover;" />
+                    </div>
+
+
+                    <div class="mb-4 text-center">
+                        <label class="form-label">Ana Görsel (Image1)</label>
+                        @Html.TextBoxFor(x => x.Image1,
+                            new { @class = "form-control image-input", data_preview = "image1Preview" })
+
+                        <img id="image1Preview"
+                             src="@Model.Image1"
+                             class="img-thumbnail mt-2"
+                             style="height:150px; object-fit:cover;" />
+                    </div>
+
+         
+                    <div class="mb-4 text-center">
+                        <label class="form-label">İkinci Görsel (Image2)</label>
+                        @Html.TextBoxFor(x => x.Image2,
+                            new { @class = "form-control image-input", data_preview = "image2Preview" })
+
+                        <img id="image2Preview"
+                             src="@Model.Image2"
+                             class="img-thumbnail mt-2"
+                             style="height:150px; object-fit:cover;" />
+                    </div>
+
+                </div>
+
+            </div>
+
+            <hr />
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-warning">
+                    <i class="fas fa-save me-1"></i>
+                    Güncelle
+                </button>
+            </div>
+        }
+
+    </div>
+</div>
+
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const inputs = document.querySelectorAll(".image-input");
+
+        inputs.forEach(input => {
+            input.addEventListener("input", function () {
+
+                const previewId = this.getAttribute("data_preview");
+                const previewImg = document.getElementById(previewId);
+
+                previewImg.src = this.value;
+            });
+        });
+
+    });
+    </script>
+
+
+<style>
+    .image-input {
+        font-size: 13px;
+    }
+
+    img {
+        transition: 0.3s;
+    }
+
+        img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+</style>

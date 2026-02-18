@@ -1,0 +1,93 @@
+﻿<div class="container-fluid sticky-top bg-white shadow-sm">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light py-3">
+
+           
+            <a href="@Url.Action("Index","Default")" class="navbar-brand">
+                <h4 class="m-0 fw-bold text-primary">
+                    <i class="fa fa-clinic-medical me-2"></i>Medinova
+                </h4>
+            </a>
+
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+
+
+                <div class="navbar-nav mx-auto">
+                    <a href="@Url.Action("Index","Default")" class="nav-link">Anasayfa</a>
+                    <a href="#about" class="nav-link">Hakkımızda</a>
+                    <a href="#services" class="nav-link">Hizmetler</a>
+                    <a href="#team" class="nav-link">Kadromuz</a>
+                </div>
+
+
+                <div class="d-flex align-items-center">
+
+                    @if (Session["AdminId"] == null
+                        && Session["DoctorId"] == null
+                        && Session["PatientId"] == null)
+                    {
+                        <a href="@Url.Action("Login","Account")"
+                           class="btn btn-outline-primary me-2 px-4">
+                            Giriş Yap
+                        </a>
+
+                        <a href="@Url.Action("Register","Account")"
+                           class="btn btn-primary px-4">
+                            Kayıt Ol
+                        </a>
+                    }
+                    else
+                    {
+                        string areaName = "";
+
+                        if (Session["AdminId"] != null)
+                        {
+                            areaName = "Admin";
+                            <span class="me-3 text-dark fw-semibold">
+                                <i class="fa fa-user-circle text-dark me-1"></i>
+                                @Session["FullName"]
+                            </span>
+                        }
+                        else if (Session["DoctorId"] != null)
+                        {
+                            areaName = "Doctor";
+                            <span class="me-3 text-dark fw-semibold">
+                                <i class="fa fa-user-circle text-dark me-1"></i>
+                                @Session["DoctorFullName"]
+                            </span>
+                        }
+                        else if (Session["PatientId"] != null)
+                        {
+                            areaName = "Patient";
+                            <span class="me-3 text-dark fw-semibold">
+                                <i class="fa fa-user-circle text-dark me-1"></i>
+                                @Session["PatientName"]
+                            </span>
+                        }
+
+
+                        <a href="@Url.Action("Index","Home", new { area = areaName })"
+                           class="btn btn-outline-primary me-2 px-4">
+                            Panelim
+                        </a>
+
+                        <a href="@Url.Action("Logout","Account")"
+                           class="btn btn-outline-danger px-3">
+                            Çıkış
+                        </a>
+                    }
+
+                </div>
+
+
+            </div>
+
+        </nav>
+    </div>
+</div>

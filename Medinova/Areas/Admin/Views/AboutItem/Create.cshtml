@@ -1,0 +1,102 @@
+﻿@model Medinova.DTOs.AboutItemDtos.CreateAboutItemDto
+
+@{
+    ViewBag.Title = "Yeni Hakkımda İçeriği Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="section">
+    <div class="card">
+
+      
+        <div class="card-header">
+            <h4 class="card-title mb-0">Yeni Hakkımda İçerik Ekle</h4>
+        </div>
+
+        @using (Html.BeginForm("Create", "AboutItem", FormMethod.Post,new {area = "Admin"}))
+        {
+            <div class="card-body">
+
+               
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger">
+                        Lütfen form alanlarını kontrol ediniz.
+                    </div>
+                }
+
+                <div class="row">
+
+                   
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label fw-bold">
+                            İkon (Font Awesome)
+                        </label>
+
+                        @Html.TextBoxFor(x => x.Icon, new
+                        {
+                            @class = "form-control"
+                                     + (ViewData.ModelState["Icon"]?.Errors.Any() == true ? " is-invalid" : ""),
+                            placeholder = "fa fa-user-md"
+                        })
+
+                        <small class="text-muted">
+                            Örnek: <code>fa fa-user-md</code>
+                        </small>
+
+                        @Html.ValidationMessageFor(x => x.Icon, "",
+                            new { @class = "invalid-feedback d-block" })
+                    </div>
+
+                   
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label fw-bold">
+                            Başlık
+                        </label>
+
+                        @Html.TextBoxFor(x => x.Title, new
+                        {
+                            @class = "form-control"
+                                     + (ViewData.ModelState["Title"]?.Errors.Any() == true ? " is-invalid" : ""),
+                            placeholder = "Uzman"
+                        })
+
+                        @Html.ValidationMessageFor(x => x.Title, "",
+                            new { @class = "invalid-feedback d-block" })
+                    </div>
+
+                  
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label fw-bold">
+                            Alt Başlık
+                        </label>
+
+                        @Html.TextBoxFor(x => x.Name, new
+                        {
+                            @class = "form-control"
+                                     + (ViewData.ModelState["Name"]?.Errors.Any() == true ? " is-invalid" : ""),
+                            placeholder = "Doktor Kadrosu"
+                        })
+
+                        @Html.ValidationMessageFor(x => x.Name, "",
+                            new { @class = "invalid-feedback d-block" })
+                    </div>
+
+                </div>
+            </div>
+
+          
+            <div class="card-footer d-flex justify-content-end gap-2">
+                <a href="/Admin/AboutItem/Index"
+                   class="btn btn-outline-dark">
+                    Vazgeç
+                </a>
+
+                <button type="submit"
+                        class="btn btn-primary">
+                    Kaydet
+                </button>
+            </div>
+        }
+    </div>
+</section>

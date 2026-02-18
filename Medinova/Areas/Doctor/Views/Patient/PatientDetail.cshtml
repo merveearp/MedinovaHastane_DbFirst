@@ -1,0 +1,201 @@
+﻿@model Medinova.DTOs.PatientDtos.PatientDetailDto
+@{
+    ViewBag.Title = "PatientDetail";
+    Layout = "~/Areas/Doctor/Views/Shared/_DoctorLayout.cshtml";
+}
+
+<div class="row mb-4">
+    <div class="col-12 d-flex gap-2">
+
+        <a href="javascript:history.back()" class="btn btn-secondary btn-sm">
+            ← Geri Dön
+        </a>
+
+        <a href="@Url.Action("Index", "Patient", new { area = "Doctor" })"
+           class="btn btn-outline-primary px-4">
+            <i class="fa-solid fa-arrow-left me-1"></i>
+            Hasta Listesine Dön
+        </a>
+
+        <a href="@Url.Action("CreateAppointmentByPatient","Appointment",
+        new { area="Doctor", patientId = Model.PatientId })"
+           class="btn btn-success btn-sm">
+            <i class="fas fa-plus me-1"></i>
+            Randevu Oluştur
+        </a>
+
+
+
+    </div>
+</div>
+
+
+<div class="row">
+
+
+    <div class="col-xl-4 col-lg-5 col-md-12 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+
+                <img src="@Model.ImageUrl"
+                     class="rounded-circle mb-3 shadow"
+                     style="width:130px;height:130px;object-fit:cover;"
+                     onerror="this.src='/Templates/medinova-1.0.0/img/default-profile.png'" />
+
+                <h5 class="font-weight-bold mb-2">
+                    @Model.FirstName @Model.LastName
+                </h5>
+
+                <div class="mb-2">
+                    @if (Model.GenderName == "Kadın")
+                    {
+                        <span class="badge bg-pink px-3 py-2">
+                            <i class="fas fa-venus me-1"></i> Kadın
+                        </span>
+                    }
+                    else if (Model.GenderName == "Erkek")
+                    {
+                        <span class="badge bg-primary px-3 py-2">
+                            <i class="fas fa-mars me-1"></i> Erkek
+                        </span>
+                    }
+                </div>
+
+                <div class="mt-2">
+                    <span class="badge badge-pill @(Model.IsActive ? "badge-active" : "badge-passive") px-3 py-2">
+                        <i class="fas @(Model.IsActive ? "fa-check-circle" : "fa-times-circle") me-1"></i>
+                        @(Model.IsActive ? "Aktif" : "Pasif")
+                    </span>
+                </div>
+
+                <hr />
+
+                <a href="@Url.Action("GetListAppointment", "Patient", new { area = "Doctor", patientId = Model.PatientId ,doctorId = ViewBag.DoctorId  })"
+                   class="btn btn-primary btn-sm w-100 mt-2">
+                    <i class="fas fa-calendar-check me-1"></i>
+                    @Model.FirstName @Model.LastName Hastanın Randevu Geçmişi
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-8 col-lg-7 col-md-12">
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">📋 Hasta Bilgileri</h5>
+            </div>
+
+            <div class="card-body">
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <strong>
+                            <i class="fas fa-id-card text-secondary me-1"></i>
+                            TC Kimlik No:
+                        </strong><br />
+                        <span>@Model.IdentityNumber</span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <strong>
+                            <i class="fas fa-tint text-danger me-1"></i>
+                            Kan Grubu:
+                        </strong><br />
+
+                        <span class="@(string.IsNullOrWhiteSpace(Model.BloodType) ? "text-muted fst-italic" : "")">
+                            @(string.IsNullOrWhiteSpace(Model.BloodType)
+                            ? "Kan grubu bilgisi yok"
+                            : Model.BloodType)
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <strong>
+                            <i class="fas fa-birthday-cake text-secondary me-1"></i>
+                            Doğum Tarihi:
+                        </strong><br />
+                        <span>
+                            @(Model.BirthDate.HasValue
+                                ? Model.BirthDate.Value.ToString("dd.MM.yyyy")
+                                : "Bilgi yok")
+                        </span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <strong>
+                            <i class="fas fa-hourglass-half text-secondary me-1"></i>
+                            Yaş:
+                        </strong><br />
+                        <span>@(Model.Age ?? 0)</span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <strong>
+                            <i class="fas fa-venus-mars text-secondary me-1"></i>
+                            Cinsiyet:
+                        </strong><br />
+                        <span>@Model.GenderName</span>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <strong>
+                            <i class="fas fa-phone-alt text-success me-1"></i>
+                            Telefon:
+                        </strong><br />
+                        <span>@Model.PhoneNumber</span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <strong>
+                            <i class="fas fa-envelope text-info me-1"></i>
+                            E-posta:
+                        </strong><br />
+                        <span>@Model.Email</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <strong>Kayıt Tarihi:</strong>
+                @Model.CreatedDate.ToShortDateString()
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+    .bg-pink {
+        background-color: #ec4899 !important;
+        color: #fff;
+    }
+
+    .badge-active {
+        background: linear-gradient(135deg, #16a34a, #15803d);
+        color: #fff;
+        font-weight: 600;
+        box-shadow: 0 4px 10px rgba(22, 163, 74, 0.35);
+    }
+
+    .badge-passive {
+        background: linear-gradient(135deg, #dc2626, #991b1b);
+        color: #fff;
+        font-weight: 600;
+        box-shadow: 0 4px 10px rgba(220, 38, 38, 0.35);
+    }
+</style>
+

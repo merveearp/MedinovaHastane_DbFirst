@@ -1,0 +1,41 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+@Html.Partial("HeadSection") 
+
+<body>
+
+    <!-- Topbar Start -->
+    <div class="container-fluid py-2 border-bottom d-none d-lg-block">
+        <div class="container">
+            <div class="row">
+
+                @*@Html.Action("ContactSection")
+
+               @Html.Action("MediaSection")*@
+
+            </div>
+        </div>
+    </div>
+    <!-- Topbar End -->
+
+ @*@Html.Partial("NavbarSection")*@
+   
+
+    @RenderBody()
+
+   @*@Html.Partial("FooterSection")*@
+
+    <!-- Back to Top -->
+    <a href="#!" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    @*@Html.Partial("ScriptsSection")*@
+</body>
+
+</html>

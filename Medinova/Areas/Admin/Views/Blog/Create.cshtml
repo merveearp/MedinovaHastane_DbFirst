@@ -1,0 +1,141 @@
+﻿@model Medinova.DTOs.BlogDtos.CreateBlogDto
+
+@{
+    ViewBag.Title = "Yeni Blog Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-heading mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h3>
+            <i class="fas fa-plus text-success me-2"></i>
+            Yeni Blog Oluştur
+        </h3>
+
+        <a href="@Url.Action("Index","Blog", new { area="Admin"})"
+           class="btn btn-outline-secondary btn-sm">
+            <i class="fa fa-arrow-left me-1"></i>
+            Listeye Dön
+        </a>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        @using (Html.BeginForm("Create", "Blog", FormMethod.Post, new { area = "Admin" }))
+        {
+
+            <div class="row">
+
+                <div class="col-md-8">
+
+                    <div class="mb-3">
+                        <label class="form-label">Blog Başlığı</label>
+                        @Html.TextBoxFor(x => x.BlogTitle, new { @class = "form-control", placeholder = "Blog başlığı giriniz" })
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Alt Başlık</label>
+                        @Html.TextBoxFor(x => x.BlogSubtitle, new { @class = "form-control", placeholder = "Alt başlık giriniz" })
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Blog İçeriği</label>
+                        @Html.TextAreaFor(x => x.BlogContent,
+                            new { @class = "form-control", rows = 8, placeholder = "Blog içeriğini yazınız..." })
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Yazar Adı</label>
+                        @Html.TextBoxFor(x => x.BlogWriter, new { @class = "form-control", placeholder = "Yazar adı" })
+                    </div>
+
+                </div>
+
+              
+                <div class="col-md-4">
+
+                  
+                    <div class="mb-4 text-center">
+                        <label class="form-label">Yazar Profil Linki</label>
+                        @Html.TextBoxFor(x => x.WriterProfile,
+                            new { @class = "form-control image-input", data_preview = "writerPreview" })
+
+                        <img id="writerPreview"
+                             src="@Url.Content("~/Templates/medinova-1.0.0/img/default-profile.png")"
+                             class="img-thumbnail mt-2"
+                             style="height:120px; object-fit:cover;" />
+
+                    </div>
+
+                   
+                    <div class="mb-4 text-center">
+                        <label class="form-label">Ana Görsel (Image1)</label>
+                        @Html.TextBoxFor(x => x.Image1,
+                            new { @class = "form-control image-input", data_preview = "image1Preview" })
+
+                        <img id="image1Preview"
+                             src="@Url.Content("~/Templates/medinova-1.0.0/img/default.jpg")"
+                             class="img-thumbnail mt-2"
+                             style="height:150px; object-fit:cover;" />
+                    </div>
+
+                 
+                    <div class="mb-4 text-center">
+                        <label class="form-label">İkinci Görsel (Image2)</label>
+                        @Html.TextBoxFor(x => x.Image2,
+                            new { @class = "form-control image-input", data_preview = "image2Preview" })
+
+                        <img id="image2Preview"
+                             src="@Url.Content("~/Templates/medinova-1.0.0/img/default.jpg")"
+                             class="img-thumbnail mt-2"
+                             style="height:150px; object-fit:cover;" />
+                    </div>
+
+                </div>
+
+            </div>
+
+            <hr />
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save me-1"></i>
+                    Blog Oluştur
+                </button>
+            </div>
+        }
+
+    </div>
+</div>
+
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const inputs = document.querySelectorAll(".image-input");
+
+        inputs.forEach(input => {
+            input.addEventListener("input", function () {
+
+                const previewId = this.getAttribute("data_preview");
+                const previewImg = document.getElementById(previewId);
+
+                previewImg.src = this.value || "https://via.placeholder.com/300x200";
+            });
+        });
+
+    });
+    </script>
+
+<style>
+    img {
+        transition: 0.3s;
+    }
+
+        img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+</style>

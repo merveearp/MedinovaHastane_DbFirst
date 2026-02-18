@@ -1,0 +1,94 @@
+﻿@model Medinova.Models.Contact
+
+<style>
+
+
+    .footer-title {
+        font-weight: 700;
+        font-size: 20px;
+        color: #00d4ff;
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+        .footer-title::after {
+            content: "";
+            width: 60px;
+            height: 3px;
+            background: #00d4ff;
+            display: block;
+            margin-top: 6px;
+        }
+
+    .footer-desc {
+        color: #bfc9d9;
+        margin-bottom: 20px;
+    }
+
+    .footer-item,
+    .footer-hours {
+        display: flex;
+        align-items: start;
+        gap: 12px;
+        margin-bottom: 12px;
+        color: #fff;
+    }
+
+        .footer-item i,
+        .footer-hours i {
+            color: #00d4ff;
+            margin-top: 4px;
+        }
+
+        .footer-item a {
+            color: #fff;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+            .footer-item a:hover {
+                color: #00d4ff;
+            }
+
+</style>
+
+<div class="footer-contact">
+
+    <h4 class="footer-title">
+        İletişime Geçin
+    </h4>
+
+    <p class="footer-desc">
+        @Model.ContactInfo
+    </p>
+
+    <div class="footer-item">
+        <i class="fa fa-map-marker-alt"></i>
+        <span>@Model.Address</span>
+    </div>
+
+    <div class="footer-item">
+        <i class="fa fa-envelope"></i>
+        <a href="mailto:@Model.Mail">
+            @Model.Mail
+        </a>
+    </div>
+
+    <div class="footer-item">
+        <i class="fa fa-phone-alt"></i>
+        <a href="tel:@Model.PhoneNumber">
+            @Model.PhoneNumber
+        </a>
+    </div>
+
+    <div class="footer-hours">
+        <i class="fa fa-clock"></i>
+        <div>
+            <strong>Çalışma Saatleri</strong>
+            <div class="small text-muted">
+                @Model.WorkingHours
+            </div>
+        </div>
+    </div>
+
+</div>

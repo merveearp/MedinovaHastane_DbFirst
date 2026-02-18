@@ -1,0 +1,87 @@
+﻿@model Medinova.DTOs.AboutDtos.ResultAboutDto
+
+@{
+    ViewBag.Title = "Hakkımda Güncelle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section id="basic-horizontal-layouts">
+    <div class="row match-height">
+        <div class="col-md-12 col-12">
+            <div class="card">
+
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h2 class="card-title mb-0">Hakkımda Güncelle</h2>
+
+                    <a href="/Admin/About/Index"
+                       class="btn btn-sm btn-secondary">
+                        ← Geri Dön
+                    </a>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-body">
+
+                        @using (Html.BeginForm("UpdateAbout", "About", FormMethod.Post, new { area = "Admin" }))
+                        {
+                           
+
+                            <div class="row">
+
+                                <div class="col-md-4">
+                                    <label class="fw-bold mb-2 d-block">Görsel</label>
+
+                                    <img src="@Url.Content(Model.ImageUrl)"
+                                         class="img-fluid rounded shadow-sm mb-3"
+                                         alt="Hakkımda Görseli" />
+
+                                    @Html.TextBoxFor(x => x.ImageUrl, new
+                                    {
+                                        @class = "form-control",
+                                        placeholder = "Görsel URL"
+                                    })
+                                    @Html.ValidationMessageFor(x => x.ImageUrl, "", new { @class = "text-danger" })
+                                </div>
+
+                                <!-- İçerik -->
+                                <div class="col-md-8">
+
+                                    <div class="mb-3">
+                                        <label class="fw-bold">Başlık</label>
+                                        @Html.TextBoxFor(x => x.Title, new
+                                        {
+                                            @class = "form-control",
+                                            placeholder = "Başlık giriniz"
+                                        })
+                                        @Html.ValidationMessageFor(x => x.Title, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="fw-bold">Açıklama</label>
+                                        @Html.TextAreaFor(x => x.Description, 6, 0, new
+                                        {
+                                            @class = "form-control",
+                                            placeholder = "Açıklama giriniz"
+                                        })
+                                        @Html.ValidationMessageFor(x => x.Description, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="text-end">
+                                        <button type="submit"
+                                                class="btn btn-success px-4">
+                                            Kaydet
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

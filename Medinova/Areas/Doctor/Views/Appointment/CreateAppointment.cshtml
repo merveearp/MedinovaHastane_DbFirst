@@ -1,0 +1,121 @@
+﻿@model Medinova.DTOs.AppointmentDtos.CreateAppointmentDto
+
+@{
+    ViewBag.Title = "Randevu Oluştur";
+    Layout = "~/Areas/Doctor/Views/Shared/_DoctorLayout.cshtml";
+}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h4 class="fw-bold">🗓 Yeni Randevu Oluştur</h4>
+        <p class="text-muted">
+            @ViewBag.DepartmentName bölümüne ait hastalar için randevu oluşturabilirsiniz.
+        </p>
+    </div>
+</div>
+
+@using (Html.BeginForm("CreateAppointment", "Appointment", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Hasta</label>
+                @Html.DropDownListFor(x => x.PatientId,
+                    (List<SelectListItem>)ViewBag.PatientList,
+                    "Hasta Seçiniz",
+                    new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.PatientId, "", new { @class = "text-danger" })
+            </div>
+
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Tarih</label>
+
+                @Html.DropDownList("AppointmentDate", (List<SelectListItem>)ViewBag.dateList,
+               "Tarih Seçiniz",
+               new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.AppointmentDate, "", new { @class = "text-danger" })
+
+
+            </div>
+
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Saat</label>
+                <select id="appointmentTime"
+                        name="AppointmentTime"
+                        class="form-select">
+                    <option value="">Saat Seçiniz</option>
+                </select>
+                @Html.ValidationMessageFor(x => x.AppointmentTime, "", new { @class = "text-danger" })
+            </div>
+
+
+            <div class="text-end mt-4">
+                <button type="submit" class="btn btn-success px-4">
+                    Randevu Oluştur
+                </button>
+            </div>
+
+        </div>
+    </div>
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+
+    document.getElementById("AppointmentDate")
+        .addEventListener("change", function () {
+
+            var selectedDate = this.value;
+
+            fetch('/Doctor/Appointment/GetAvailableHours?selectedDate=' + selectedDate)
+                .then(response => response.json())
+                .then(data => {
+
+                    var dropdown = document.getElementById("appointmentTime");
+                    dropdown.innerHTML = '<option value="">Saat Seçiniz</option>';
+
+                    data.forEach(function (item) {
+
+                        var option = document.createElement("option");
+                        option.value = item.Time;
+                        option.text = item.Time + (item.IsBooked ? " (Dolu)" : "");
+
+                        if (item.IsBooked) {
+                            option.disabled = true;
+                            option.style.color = "gray";
+                        }
+
+                        dropdown.appendChild(option);
+                    });
+                });
+        });
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Hata!',
+                text: '@Html.Raw(
+                    string.Join(" ",
+                        ViewData.ModelState.Values
+                            .SelectMany(v => v.Errors)
+                            .Select(e => e.ErrorMessage)
+                    )
+                )'
+            });
+        });
+    </script>
+}

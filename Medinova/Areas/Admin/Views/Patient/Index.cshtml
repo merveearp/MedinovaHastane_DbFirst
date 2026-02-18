@@ -1,0 +1,144 @@
+﻿@model List<Medinova.DTOs.PatientDtos.ResultPatientDto>
+
+@{
+    ViewBag.Title = "Hasta Listesi";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    int count = 0;
+}
+
+<div class="card">
+
+
+    <div class="mb-3 d-flex gap-2">
+        <a href="@Url.Action("Index","Patient")"
+           class="btn btn-outline-secondary btn-sm">
+            Tüm Hastalar
+        </a>
+
+        <a href="@Url.Action("ActivePatients","Patient")"
+           class="btn btn-outline-success btn-sm">
+            Kayıtlı Hastalar
+        </a>
+
+        <a href="@Url.Action("PassivePatients","Patient")"
+           class="btn btn-outline-danger btn-sm">
+            Kaydı Geçersiz Hastalar
+        </a>
+    </div>
+
+
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Hasta Listesi</h5>
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Cinsiyet</th>
+                        <th>Hasta</th>
+                        <th>Telefon</th>
+                        <th>Durum</th>
+                        <th class="text-end">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        count++;
+                        <tr>
+                            <td>@count</td>
+
+                            <td>
+                                @if (item.GenderId == 1)
+                                {
+                                    <span class="badge bg-danger text-white">
+                                        <i class="fas fa-venus me-1"></i> Kadın
+                                    </span>
+                                }
+                                else if (item.GenderId == 2)
+                                {
+                                    <span class="badge bg-primary text-white">
+                                        <i class="fas fa-mars me-1"></i> Erkek
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">
+                                        -
+                                    </span>
+                                }
+                            </td>
+
+
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="@item.ImageUrl"
+                                         class="rounded-circle me-2"
+                                         width="40"
+                                         height="40"
+                                         onerror="this.src='/Templates/medinova-1.0.0/img/default-profile.png'" />
+
+                                    <div>
+                                        <strong>
+                                            @item.FirstName @item.LastName
+                                        </strong>
+                                        <br />
+                                        <small class="text-muted">
+                                            @item.Email
+                                        </small>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>
+                                @item.PhoneNumber
+                            </td>
+
+
+                            <td>
+                                @if (item.IsActive)
+                                {
+                                    <span class="badge bg-success">Aktif</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Pasif</span>
+                                }
+                            </td>
+
+
+                            <td class="text-end">
+                                <a href="/Admin/Patient/PatientEdit/@item.PatientId"
+                                   class="btn btn-light-warning btn-sm">
+                                    Düzenle
+                                </a>
+
+                                <a href="/Admin/Patient/PatientDetail/@item.PatientId"
+                                   class="btn btn-light-info btn-sm">
+                                    Detay
+                                </a>
+
+                                <a href="/Admin/Patient/GetListAppointment/@item.PatientId"
+                                   class="btn btn-light-primary btn-sm">
+                                    Randevular
+                                </a>
+                            </td>
+                        </tr>
+                    }
+
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">
+                                Hasta bulunamadı.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

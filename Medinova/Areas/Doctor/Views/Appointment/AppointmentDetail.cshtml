@@ -1,0 +1,192 @@
+﻿@model Medinova.DTOs.AppointmentDtos.GetAppointmentInfoDto
+
+@{
+    ViewBag.Title = "Randevu Detayı";
+    Layout = "~/Areas/Doctor/Views/Shared/_DoctorLayout.cshtml";
+}
+
+<div class="mb-4">
+
+    <a href="@Url.Action("Index", "Appointment", new { area = "Doctor" })"
+       class="btn btn-outline-primary px-4 ms-2">
+        <i class="fa-solid fa-arrow-left me-1"></i>
+        Randevu Listesine Dön
+    </a>
+
+    <a href="javascript:history.back()" class="btn btn-secondary btn-sm">
+        ← Geri Dön
+    </a>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header fw-bold d-flex justify-content-between align-items-center">
+        👤 Hasta Bilgileri
+
+        <a href="@Url.Action("PatientDetail", "Patient", new { area = "Doctor", id = Model.PatientId })"
+           class="btn btn-sm btn-outline-primary">
+            <i class="fa-solid fa-user me-1"></i>
+            Hasta Detayı
+        </a>
+    </div>
+
+    <div class="card-body">
+        <div class="row g-3">
+
+            <div class="col-md-3 text-center">
+                <img src="@Model.PatientImage"
+                     class="rounded-circle mb-2"
+                     style="width:90px;height:90px;object-fit:cover;border:2px solid #e5e7eb;" />
+
+                <div class="fw-bold">
+                    @Model.PatientName @Model.PatientLastName
+                </div>
+                <small class="text-muted">@Model.PatientGender</small>
+            </div>
+
+            <div class="col-md-9">
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <p><strong>TC:</strong> @Model.PatientTC</p>
+                        <p><strong>Telefon:</strong> @Model.PatientPhoneNumber</p>
+                        <p><strong>Email:</strong> @Model.PatientEmail</p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <p><strong>Doğum Tarihi:</strong> @Model.PatientBirhtDate.ToString("dd.MM.yyyy")</p>
+                        <p><strong>Yaş:</strong> @Model.PatientAge</p>
+                        <p><strong>Kan Grubu:</strong> @Model.BloodType</p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="card shadow-sm">
+    <div class="card-header fw-bold">
+        🗓️ Randevu Bilgileri
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+
+            <div class="col-md-4">
+                <p>
+                    <strong>Tarih:</strong><br />
+                    @Model.AppointmentDate.ToString("dd.MM.yyyy")
+                </p>
+            </div>
+
+            <div class="col-md-4">
+                <p>
+                    <strong>Saat:</strong><br />
+                    @Model.AppointmentTime
+                </p>
+            </div>
+
+            <div class="col-md-4">
+                <p>
+                    <strong>Durum:</strong><br />
+
+                    @if (Model.IsCompleted)
+                    {
+                        <span class="badge bg-success">Tamamlandı</span>
+                    }
+                    else if (Model.IsActive)
+                    {
+                        <span class="badge bg-warning text-dark">Devam Ediyor</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">İptal Edildi</span>
+                    }
+
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="mt-4 d-flex gap-2">
+
+
+    @if (Model.IsActive == true && Model.IsCompleted == false)
+    {
+
+        <form method="post"
+              action="@Url.Action("CompleteAppointment","Appointment", new { area="Doctor" })">
+            <input type="hidden" name="DoctorId" value="@Model.DoctorId" />
+            <input type="hidden" name="AppointmentId" value="@Model.AppointmentId" />
+
+            <button type="submit" class="btn btn-success">
+                <i class="fa-solid fa-check-circle me-1"></i>
+                Randevuyu Tamamla
+            </button>
+        </form>
+
+
+
+        <form method="post"
+              action="@Url.Action("CanceledAppointment","Appointment", new { area="Doctor" })">
+            <input type="hidden" name="DoctorId" value="@Model.DoctorId" />
+            <input type="hidden" name="AppointmentId" value="@Model.AppointmentId" />
+
+            <button type="submit" class="btn btn-danger">
+                <i class="fa-solid fa-times-circle me-1"></i>
+                Randevuyu İptal Et
+            </button>
+        </form>
+
+
+
+    }
+
+
+    @if (Model.IsCompleted && Model.AppointmentDetailId != null)
+    {
+        <a href="@Url.Action(
+        "Index",
+        "AppointmentDetail",
+        new {
+            area = "Doctor",
+            appointmentId = Model.AppointmentId,
+            appointmentDetailId = Model.AppointmentDetailId
+        })"
+           class="btn btn-outline-secondary">
+            <i class="fa-solid fa-eye me-1"></i>
+            Detayları Görüntüle
+        </a>
+    }
+
+
+
+    @if (Model.IsActive == false && Model.IsCompleted == false)
+    {
+        <button class="btn btn-outline-danger" disabled>
+            <i class="fa-solid fa-ban me-1"></i>
+            Randevu İptal Edildi
+        </button>
+    }
+
+</div>
+
+
+@if (TempData["CancelSuccess"] != null)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Randevu İptal Edildi',
+                text: '@TempData["CancelSuccess"]',
+                confirmButtonColor: '#dc3545'
+            });
+        });
+    </script>
+}

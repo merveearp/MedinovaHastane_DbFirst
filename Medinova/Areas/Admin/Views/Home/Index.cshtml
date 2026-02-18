@@ -1,0 +1,593 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .dashboard-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+    }
+
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+        }
+
+    .stats-icon-modern {
+        width: 55px;
+        height: 55px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-size: 22px;
+        color: white;
+    }
+
+    .bg-purple-gradient {
+        background: linear-gradient(45deg, #7367f0, #9e95f5);
+    }
+
+    .bg-blue-gradient {
+        background: linear-gradient(45deg, #0d6efd, #4dabf7);
+    }
+
+    .bg-green-gradient {
+        background: linear-gradient(45deg, #28c76f, #81fbb8);
+    }
+
+    .bg-red-gradient {
+        background: linear-gradient(45deg, #ea5455, #ff9f9f);
+    }
+
+    .stat-number {
+        font-size: 22px;
+        font-weight: 700;
+    }
+
+    .stat-title {
+        font-size: 14px;
+        color: #6c757d;
+    }
+
+    .profile-card-hover {
+        transition: all 0.25s ease;
+        border-radius: 14px;
+        cursor: pointer;
+    }
+
+        .profile-card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            background-color: #f8f9fa;
+        }
+</style>
+
+
+<div class="page-heading mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h3 class="fw-bold mb-1">
+                <i class="fa-solid fa-hospital text-primary me-2"></i>
+                Medinova Yönetim Paneli
+            </h3>
+            <p class="text-muted mb-0">
+                Hastane genel istatistikleri ve sistem özeti
+            </p>
+        </div>
+        <div>
+            <span class="badge bg-light-primary text-primary px-3 py-2">
+                <i class="fa-solid fa-calendar-day me-1"></i>
+                @DateTime.Now.ToString("dd MMMM yyyy")
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="page-content">
+    <section class="row">
+        <div class="col-12 col-lg-8">
+
+            <div class="row">
+
+
+                <div class="col-6 col-lg-3 col-md-6 mb-4">
+                    <div class="card dashboard-card">
+                        <div class="card-body d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="stat-title">Departman Sayısı</div>
+                                <div class="stat-number">@ViewBag.DepartmentCount</div>
+                            </div>
+                            <div class="stats-icon-modern bg-purple-gradient">
+                                <i class="fa-solid fa-building-columns"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-6 col-lg-3 col-md-6 mb-4">
+                    <div class="card dashboard-card">
+                        <div class="card-body d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="stat-title">Toplam Doktor Kadrosu</div>
+                                <div class="stat-number">@ViewBag.DoctorCount</div>
+                            </div>
+                            <div class="stats-icon-modern bg-blue-gradient">
+                                <i class="fa-solid fa-user-doctor"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-6 col-lg-3 col-md-6 mb-4">
+                    <div class="card dashboard-card">
+                        <div class="card-body d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="stat-title">Toplam Randevu</div>
+                                <div class="stat-number">@ViewBag.TotalAppointment</div>
+                            </div>
+                            <div class="stats-icon-modern bg-green-gradient">
+                                <i class="fa-solid fa-calendar-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-6 col-lg-3 col-md-6 mb-4">
+                    <div class="card dashboard-card">
+                        <div class="card-body d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="stat-title">Tamamlanan Muayene</div>
+                                <div class="stat-number">@ViewBag.AppointmentDetailCount</div>
+                            </div>
+                            <div class="stats-icon-modern bg-red-gradient">
+                                <i class="fa-solid fa-stethoscope"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Aylık Toplam Randevu</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="myChart" style="height:500px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">
+                                Aylık Randevu Raporu
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="myPlot" style="height:550px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">
+                                Departmana Göre Randevu Raporu
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="myChart2" style="height:200px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <a href="@Url.Action("Index","Profile", new { area = "Admin" })"
+               class="text-decoration-none">
+
+                <div class="card profile-card-hover">
+                    <div class="card-body py-4 px-5">
+                        <div class="d-flex align-items-center justify-content-between">
+
+                            <div class="d-flex align-items-center">
+
+                                <div class="avatar avatar-md">
+                                    <img src="@(Session["AdminProfile"] != null
+                                 ? Session["AdminProfile"].ToString()
+                                 : Url.Content("~/Templates/medinova-1.0.0/img/panel-admin.png"))"
+                                         alt="Admin"
+                                         class="rounded-circle shadow-sm"
+                                         style="width:46px;height:46px;object-fit:cover;" />
+                                </div>
+
+                                <div class="ms-3 name lh-sm">
+                                    <div class="fw-semibold text-dark">
+                                        Yönetici @(Session["FullName"] ?? "Admin")
+                                    </div>
+                                    <small class="text-muted">
+                                        Profilimi Görüntüle
+                                    </small>
+                                </div>
+
+                            </div>
+
+                            <div>
+                                <i class="fa-solid fa-chevron-right text-muted"></i>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+
+
+
+            <div class="card">
+                <div class="card-header">
+                    <h4>Hastane Randevu Raporu </h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="myPieChart" style="width:100%;max-width:600px"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4>Departmanlara Göre Randevu Dağılımı</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="departmentChart" style="max-height:400px;"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4>Departmanlara Göre Doktor Dağılımı</h4>
+                </div>
+                <div class="card-body">
+                    <div id="doctorChart" style="width:100%; max-width:600px; height:500px;">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0"></script>
+<script>
+
+const forecastValues = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Forecast));
+
+const xValues = [
+    "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık", "Ocak", "Şubat",
+    "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos"
+];
+
+const yValues = [
+    @ViewBag.Agustos,
+    @ViewBag.Eylul,
+    @ViewBag.Ekim,
+    @ViewBag.Kasim,
+    @ViewBag.Aralik,
+    @ViewBag.Ocak,
+    @ViewBag.Subat,
+    null,null,null,null,null,null
+];
+
+const ctx = document.getElementById("myChart").getContext("2d");
+
+const blueGradient = ctx.createLinearGradient(0, 0, 0, 400);
+blueGradient.addColorStop(0, "rgba(0, 171, 169, 0.35)");
+blueGradient.addColorStop(1, "rgba(0, 171, 169, 0)");
+
+const redGradient = ctx.createLinearGradient(0, 0, 0, 400);
+redGradient.addColorStop(0, "rgba(220, 53, 69, 0.35)");
+redGradient.addColorStop(1, "rgba(220, 53, 69, 0)");
+
+/* 🔥 ML verisini dinamik oluştur */
+const mlData = Array(6).fill(null)   // Ağustos–Ocak boş
+    .concat([@ViewBag.Subat])        // Şubat bağlantı noktası
+    .concat(forecastValues);         // Mart sonrası otomatik
+
+new Chart(ctx, {
+    type: "line",
+    data: {
+        labels: xValues,
+        datasets: [
+        {
+            label: "Gerçek Randevu",
+            data: yValues,
+            borderColor: "#00aba9",
+            borderWidth: 3,
+            tension: 0.4,
+            backgroundColor: blueGradient,
+            fill: true,
+            pointBackgroundColor: "#ffffff",
+            pointBorderColor: "#00aba9",
+            pointBorderWidth: 2,
+            pointRadius: 5
+        },
+        {
+            label: "ML Tahmini",
+            data: mlData,
+            borderColor: "#dc3545",
+            borderWidth: 3,
+            tension: 0.4,
+            backgroundColor: redGradient,
+            fill: true,
+            borderDash: [6,6],
+            pointBackgroundColor: "#dc3545",
+            pointBorderColor: "#ffffff",
+            pointBorderWidth: 2,
+            pointRadius: 6
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: "bottom"
+            },
+            tooltip: {
+                backgroundColor: "#222",
+                callbacks: {
+                    label: function(context) {
+                        return context.dataset.label + ": " +
+                               context.parsed.y.toLocaleString("tr-TR");
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: false,
+                grid: {
+                    color: "rgba(0,0,0,0.05)"
+                }
+            },
+            x: {
+                grid: {
+                    display: false
+                }
+            }
+        }
+    }
+});
+
+</script>
+
+
+<script>
+   const xArray = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.DoctorList));
+   const yArray = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.AppointmentByList));
+
+   const data = [{
+       x: xArray,
+       y: yArray,
+       type: "bar",
+       marker: { color: "#1A2F70" }
+   }];
+
+   const layout = {
+       title: "@ViewBag.PreviousMonth Ayının En Çok Randevu Kaydı Alan Doktor Listesi",
+       height: 600,
+       margin: { t: 80, l: 70, r: 30, b: 120 },
+       xaxis: {
+           title: "Doktorlar",
+           tickangle: -45
+       },
+       yaxis: {
+           title: "Tamamlanan Randevu Sayısı",
+          
+       }
+   };
+
+   const config = {
+       responsive: true
+   };
+
+   Plotly.newPlot("myPlot", data, layout, config);
+</script>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const ctx = document.getElementById('myPieChart').getContext('2d');
+
+    new Chart(ctx, {
+        type: "pie",
+        data: {
+            labels: ["İptal", "Tamamlanan", "Aktif"],
+            datasets: [{
+                backgroundColor: ["#b91d47", "#66C0ED", "#8BED66"],
+                data: [@ViewBag.cancel, @ViewBag.complete, @ViewBag.active]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: "Hastane Randevu Durum Dağılımı"
+                }
+            }
+        }
+    });
+
+});
+</script>
+
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+    const labels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.DepartmentNames));
+    const dataValues = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.DepartmentCounts));
+
+    const ctx = document.getElementById('departmentChart').getContext('2d');
+
+    new Chart(ctx, {
+        type: "doughnut",
+        data: {
+            labels: labels,
+            datasets: [{
+                data: dataValues,
+                backgroundColor: [
+                    "#DEB9AB",
+                    "#0E3D63",
+                    "#EDEA7B",
+                    "#1A9980",
+                    "#70114A",
+                    "#8A4588",
+                    "#66C0ED",
+                    "#1B1C57",
+                    "#2D544C",
+                    "#4FB9D6",
+                    "#4CCFC2",
+                    "#AFE9ED"
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: "right"
+                },
+                title: {
+                    display: true,
+                }
+            }
+        }
+    });
+
+});
+</script>
+
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script>
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+        const departmentNames = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.DoctorDepartment));
+        const departmentCounts = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.DoctorDepartmentCount));
+
+        let chartData = [['Departman', 'Doktor Sayısı']];
+
+        for (let i = 0; i < departmentNames.length; i++) {
+            chartData.push([departmentNames[i], departmentCounts[i]]);
+        }
+
+        const data = google.visualization.arrayToDataTable(chartData);
+
+        const options = {
+
+            is3D: true,
+            chartArea: { width: '90%', height: '80%' },
+            legend: { position: 'right' }
+        };
+
+        const chart = new google.visualization.PieChart(document.getElementById('doctorChart'));
+        chart.draw(data, options);
+    }
+</script>
+
+
+
+<script>
+ document.addEventListener("DOMContentLoaded", function () {
+
+    const xValues = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.DepartmentNames2 ?? new List<string>()));
+    const yValues = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.DepartmentCounts2 ?? new List<int>()));
+
+    const ctx = document.getElementById("myChart2").getContext("2d");
+
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, "rgba(0, 171, 169, 0.4)");
+    gradient.addColorStop(1, "rgba(0, 171, 169, 0)");
+
+     new Chart(ctx, {
+         type: "bar",
+         data: {
+             labels: xValues,
+             datasets: [{
+                 label: "Tamamlanan Randevu",
+                 data: yValues,
+                 backgroundColor: "#B0E897",
+                 borderWidth: 1
+             }]
+         },
+         options: {
+             indexAxis: 'y',
+             responsive: true,
+             plugins: { legend: { display: false } },
+             scales: {
+                 x: { beginAtZero: true }
+             }
+         }
+     });
+
+
+});
+
+</script>
+
+@if (Session["JustLoggedInAdmin"] != null)
+{
+    <script>
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'Hoş geldiniz @Session["FullName"]',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    </script>
+}
+
+@{ Session.Remove("JustLoggedInAdmin"); }

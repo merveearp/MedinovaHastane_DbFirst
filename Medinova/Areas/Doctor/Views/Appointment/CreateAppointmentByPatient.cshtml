@@ -1,0 +1,128 @@
+﻿@model Medinova.DTOs.AppointmentDtos.CreateAppointmentDto
+
+@{
+    ViewBag.Title = "Hasta İçin Randevu";
+    Layout = "~/Areas/Doctor/Views/Shared/_DoctorLayout.cshtml";
+}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow-sm border-0">
+            <div class="card-body d-flex align-items-center">
+
+                <div class="me-3">
+                    <img src="@(ViewBag.PatientImage ?? Url.Content("~/Templates/medinova-1.0.0/img/user.png"))"
+                         alt="Hasta"
+                         class="rounded-circle shadow-sm"
+                         style="width:60px;height:60px;object-fit:cover;" />
+                </div>
+
+                <div>
+                    <h5 class="fw-bold mb-1">
+                        🗓 Yeni Randevu Oluştur
+                    </h5>
+
+                    <p class="text-muted mb-0">
+                        <strong>@ViewBag.PatientName</strong>
+                        (TC: @ViewBag.PatientTC)
+                        için randevu oluşturuyorsunuz.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@using (Html.BeginForm("CreateAppointmentByPatient", "Appointment",
+    new { area = "Doctor" }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.PatientId)
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Tarih</label>
+
+                @Html.DropDownListFor(x => x.AppointmentDate,
+                    (List<SelectListItem>)ViewBag.dateList,
+                    "Tarih Seçiniz",
+                    new { @class = "form-control", id = "AppointmentDate" })
+
+                @Html.ValidationMessageFor(x => x.AppointmentDate, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Saat</label>
+
+                <select id="appointmentTime"
+                        name="AppointmentTime"
+                        class="form-select">
+                    <option value="">Saat Seçiniz</option>
+                </select>
+
+                @Html.ValidationMessageFor(x => x.AppointmentTime, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="text-end mt-4">
+                <button type="submit" class="btn btn-success px-4">
+                    Randevu Oluştur
+                </button>
+            </div>
+
+        </div>
+    </div>
+}
+
+<script>
+    document.getElementById("AppointmentDate")
+        .addEventListener("change", function () {
+
+            var selectedDate = this.value;
+
+            fetch('/Doctor/Appointment/GetAvailableHours?selectedDate=' + selectedDate)
+                .then(response => response.json())
+                .then(data => {
+
+                    var dropdown = document.getElementById("appointmentTime");
+                    dropdown.innerHTML = '<option value="">Saat Seçiniz</option>';
+
+                    data.forEach(function (item) {
+
+                        var option = document.createElement("option");
+                        option.value = item.Time;
+                        option.text = item.Time + (item.IsBooked ? " (Dolu)" : "");
+
+                        if (item.IsBooked) {
+                            option.disabled = true;
+                            option.style.color = "gray";
+                        }
+
+                        dropdown.appendChild(option);
+                    });
+                });
+        });
+</script>
+
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Hata!',
+                text: '@Html.Raw(
+                    string.Join(" ",
+                        ViewData.ModelState.Values
+                            .SelectMany(v => v.Errors)
+                            .Select(e => e.ErrorMessage)
+                    )
+                )'
+            });
+        });
+    </script>
+}
