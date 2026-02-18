@@ -5,7 +5,7 @@ Proje mimarisi MHRS sistemi örnek alınarak geliştirilmiştir.
 
 📍 Proje Başlangıcı: Ağustos 2025  
 📊 Toplam Veri: 30.000+ kayıt  
-👩‍⚕️ 58 Doktor | 🏢 15 Departman | 👨‍👩‍👧 81 Hasta | 🔐 Rol Bazlı Kullanım
+👩‍⚕️ 56 Doktor | 🏢 16 Departman | 👨‍👩‍👧 81 Hasta | 🔐 Rol Bazlı Kullanım
 
 ---
 
@@ -153,10 +153,10 @@ ML.NET ile zaman serisi tahmin modeli uygulanmıştır.
 
 # 📊 Proje İstatistikleri
 
-- 👨‍⚕️ 58 Doktor
-- 🏢 15 Departman
+- 👨‍⚕️ 56 Doktor
+- 🏢 16 Departman
 - 👤 81 Hasta
-- 📅 50.000+ veri kaydı
+- 📅 30.000+ veri kaydı
 - 🔐 3 Rol (Admin / Doctor / Patient)
 
 ---
