@@ -542,6 +542,7 @@
     <Content Include="Areas\Admin\Views\AppointmentDetail\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Profile\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Profile\ChangePassword.cshtml" />
+    <Content Include="Areas\Doctor\Views\AppointmentDetail\Update.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />

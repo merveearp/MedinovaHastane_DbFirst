@@ -1,4 +1,5 @@
 ﻿using Medinova.DTOs.AppointmentDetailDtos;
+using Medinova.Models;
 using Medinova.Repositories.AppointmentRepository;
 using Medinova.Services.DoctorService;
 using System;
@@ -29,6 +30,15 @@ namespace Medinova.Areas.Doctor.Controllers
             return View(value);
         }
 
+        [HttpGet]
+        public async Task<ActionResult> Update(int appointmentId, int appointmentDetailId)
+        {
+            var value = await _doctorService
+                .GetAppointmentDetailAsync(appointmentId, appointmentDetailId);
+
+            return View(value);
+        }
+
 
         [HttpPost]
         public async Task<ActionResult> Update(DetailAppointmentDto dto)
@@ -37,9 +47,18 @@ namespace Medinova.Areas.Doctor.Controllers
             {
                 return View(dto);
             }
+
             await _doctorService.UpdateAppointmentDetailAsync(dto);
-            return RedirectToAction("AppointmentDetail", "Appointment");
+            TempData["SuccessAppointment"] = "Muayene sonuçları başarıyla güncellendi.";
+            return RedirectToAction("Index", "AppointmentDetail", new
+            {
+                area = "Doctor",
+                appointmentId = dto.AppointmentId,
+                appointmentDetailId = dto.AppointmentDetailId
+            });
         }
+
+
 
         [HttpGet]
         public ActionResult Create(int appointmentId)
@@ -56,6 +75,7 @@ namespace Medinova.Areas.Doctor.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(CreateAppointmentDetailDto dto)
         {
+         
             if (!ModelState.IsValid)
             {
                 return View(dto);
@@ -66,6 +86,7 @@ namespace Medinova.Areas.Doctor.Controllers
                  "Appointment",
                  new { appointmentId = dto.AppointmentId }
              );
+
 
         }
 

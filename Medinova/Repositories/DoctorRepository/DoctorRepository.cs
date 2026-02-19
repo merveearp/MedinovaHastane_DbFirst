@@ -90,28 +90,5 @@ namespace Medinova.Repositories.DoctorRepository
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-        //public async Task<List<Appointment>> GetCompletedAppointmentsAsync(bool isCompleted, int doctorId)
-        //{
-        //    return await _context.Appointments
-        //        .Where(x =>
-        //            x.IsCompleted == true &&
-        //            x.DoctorId == doctorId).OrderByDescending(x=>x.AppointmentDate)
-        //        .ToListAsync();
-        //}
-
-
-
     }
 }

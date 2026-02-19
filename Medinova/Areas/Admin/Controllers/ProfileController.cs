@@ -22,8 +22,9 @@ namespace Medinova.Areas.Admin.Controllers
 
             var value = context.Users
                 .Where(x => x.UserId == adminId)
-                .Select(x => new DoctorProfileDto
+                .Select(x => new PatientProfileDto
                 {
+                    
                     IdentityNumber = x.IdentityNumber,
                     FirstName = x.FirstName,
                     LastName = x.LastName,

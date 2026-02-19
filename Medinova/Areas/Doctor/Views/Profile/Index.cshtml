@@ -195,10 +195,10 @@
             else
             {
                 <text>
-                Swal.fire({
+               Swal.fire({
                     icon: 'success',
                     title: 'Başarılı!',
-                    text: '@TempData["Success"]'
+                    text: @Html.Raw(Json.Encode(TempData["Success"]))
                 });
                 </text>
             }
